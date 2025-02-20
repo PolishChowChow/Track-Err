@@ -1,11 +1,21 @@
-const express = require("express")
-
+import express from "express";
+import  controller from "./controllers.js"
+import { PrismaClient } from "@prisma/client";
 const app = express();
-app.get("/record", get_all_error_records);
-app.get("/record/:id", get_error_record);
-app.post("/record", save_error_record);
-app.put("/record/:id", update_error_record);
-app.delete("/record", delete_all_error_records);
-app.delete("/record/:id", delete_error_record)
+const prisma = new PrismaClient()
 
-app.listen(3000, () => console.log(`server listening on port ${3000}`))
+
+
+app.get("/records", controller.get_all_error_records);
+app.get("/records/:id", controller.get_error_record);
+app.post("/records", controller.save_error_record);
+app.put("/records/:id", controller.update_error_record);
+app.delete("/records", controller.delete_all_error_records);
+app.delete("/records/:id", controller.delete_error_record);
+
+
+prisma.$connect().then(() => {
+    app.listen(3000, () => console.log(`server listening on port ${3000}`));
+}).catch(error => {
+    console.log(error)
+})

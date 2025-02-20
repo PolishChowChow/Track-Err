@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkStation {
+  LP1
+  LP2
+}
+
+enum Reference {
+  MPDB
+  ICE
+  TRYOUT
+}
+
+enum TableId {
+  t101
+  t102
+  t301
+  t302
+  t303
+  t304
+  t50
+  t60
+}
+
+enum RobotId {
+  r01
+  r02
+  r03
+  r04
+  r05
+  r06
+  r07
+  r08
+  r09
+  r10
+  r11
+}
+
+enum MountingStation {
+  m1
+  m2
+}
+
+model ErrorRecords {
+  id  String @id @default(cuid())
+  date DateTime
+  workstation WorkStation
+  tableId TableId
+  robotId RobotId
+  mountingStation MountingStation?
+  content String
+}
