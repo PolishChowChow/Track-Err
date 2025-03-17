@@ -37,13 +37,12 @@ app.get("/records", controller.get_all_error_records);
 app.get("/records/:id", controller.get_error_record);
 app.post("/records",
     body('workstation')
+    .notEmpty()
+    .withMessage("No workstation specified.")
     .custom(workstation => {
-        console.log(workstation)
-        if(!workstations.includes(workstation)){
-            throw new Error('This workstation does not exist.')
-        }
-    })
-    .notEmpty(),
+        return workstations.includes(workstation)
+    })  
+    .withMessage('Invalid workstation'),
     body('tableId')
     .notEmpty()
     .custom(tableId => {
@@ -65,9 +64,9 @@ app.post("/records",
     .isLength({
         max: 50
     }),
-     controller.save_error_record);
+    errorHandler,
+    controller.save_error_record);
 app.put("/records/:id", controller.update_error_record);
 app.delete("/records", controller.delete_all_error_records);
 app.delete("/records/:id", controller.delete_error_record);
-app.use(errorHandler)
 app.listen(3000, () => console.log(`server listening on port ${3000}`));

@@ -1,7 +1,12 @@
-function errorHandler(err, req, res, next){
-    return res.status(err.statusCode || 500).json({
-        success: false,
-        message: err.message || 'Internal Server Error'
-    })
+import { validationResult } from "express-validator"
+
+function errorHandler(req, res, next){  
+    if(!validationResult(req).isEmpty()){
+        return res.status(400).json({
+            success: false,
+            message: validationResult(req).errors[0].msg
+        })
+    }
+    next();
 }
 export default errorHandler

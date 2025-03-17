@@ -30,7 +30,6 @@ const get_all_error_records = async(req, res, next) => {
 }
 
 const save_error_record = async(req, res, next) => {
-    console.log(req.body)
     await prisma.errorRecords.create({
         data: {
             ...req.body,
