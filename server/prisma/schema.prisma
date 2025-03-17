@@ -55,11 +55,11 @@ enum MountingStation {
 }
 
 model ErrorRecords {
-  id  String @id @default(cuid())
+  id  String @id @default(uuid())
   date DateTime
-  workstation WorkStation
-  tableId TableId
-  robotId RobotId
+  workstation WorkStation @default(LP1)
+  tableId TableId @default(t303)
+  robotId RobotId @default(r05)
   mountingStation MountingStation?
-  content String
+  content String @db.VarChar(100)
 }
