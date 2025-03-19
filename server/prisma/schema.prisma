@@ -54,12 +54,26 @@ enum MountingStation {
   m2
 }
 
+enum StructureType {
+  robot
+  table
+  mountingStation
+  workstation
+  reference
+}
 model ErrorRecords {
   id  String @id @default(uuid())
   date DateTime
   workstation WorkStation @default(LP1)
+  reference Reference @default(MPDB)
   tableId TableId @default(t303)
   robotId RobotId @default(r05)
   mountingStation MountingStation?
   content String @db.VarChar(100)
+}
+
+model Structures {
+  id String @id @default(uuid())
+  type StructureType
+  name String
 }
