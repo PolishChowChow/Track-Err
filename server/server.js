@@ -53,17 +53,21 @@ app.post("/records",
     }),
     body('robotId')
     .notEmpty()
+    .withMessage('No robotId specified')
     .custom(robotId => {
         if(!robotIds.includes(robotId)){
             throw new Error('This robotId does not exist.')
         }
-    }),
+    })
+    .withMessage('Invalid robotId'),
     body('content')
     .trim()
     .notEmpty()
+    .withMessage('No content provided')
     .isLength({
         max: 50
-    }),
+    })
+    .withMessage('Content too long'),
     errorHandler,
     controller.save_error_record);
 app.put("/records/:id", controller.update_error_record);
