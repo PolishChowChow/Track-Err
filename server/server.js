@@ -1,8 +1,11 @@
 import express from "express";
 import  controller from "./controllers.js"
 import { body } from "express-validator";
+import { PrismaClient } from "@prisma/client";
 import errorHandler from "./errorHandler.js";
 const app = express();
+
+const prisma = new PrismaClient()
 const workstations = [
     "LP1",
     "LP2"
@@ -31,7 +34,6 @@ const robotIds = [
     "r11"
 ]
 
-// app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.get("/records", controller.get_all_error_records);
 app.get("/records/:id", controller.get_error_record);
@@ -39,27 +41,52 @@ app.post("/records",
     body('workstation')
     .notEmpty()
     .withMessage("No workstation specified.")
-    .custom(workstation => {
-        return workstations.includes(workstation)
-    })  
-    .withMessage('Invalid workstation'),
+    .custom(async workstation => {
+        const workstations = await prisma.structures.findMany({
+            where: {
+                type: 'workstation'
+            }
+        })
+        const result = workstations.filter(fullWorkstation => {
+            console.log('workstation: ',workstation, 'fullWorkstation: ', fullWorkstation.name)
+            return fullWorkstation.name == workstation
+        })
+        if(result.length !== 1){
+            throw new Error('Invalid workstation')
+        }
+    }),
     body('tableId')
     .notEmpty()
-    .custom(tableId => {
-        console.log(tableId)
-        if(!tableIds.includes(tableId)){
-            throw new Error('This tableId does not exist.')
+    .withMessage('No tableId specified')
+    .custom(async tableId => {
+        const records = await prisma.structures.findMany({
+            where: {
+                type: 'table'
+            }
+        })
+        const result = records.filter(record => {
+            return record.tableId === tableId
+        })
+        if(result.length !== 1){
+            throw new Error('Invalid tableId')
         }
     }),
     body('robotId')
     .notEmpty()
     .withMessage('No robotId specified')
-    .custom(robotId => {
-        if(!robotIds.includes(robotId)){
-            throw new Error('This robotId does not exist.')
+    .custom(async robotId => {
+        const records = await prisma.structures.findMany({
+            where: {
+                type: 'robot'
+            }
+        })
+        const result = records.filter(record => {
+            return record.robotId === robotId
+        })
+        if(result.length !== 1){
+            throw new Error('Invalid robotId')
         }
-    })
-    .withMessage('Invalid robotId'),
+    }),
     body('content')
     .trim()
     .notEmpty()
