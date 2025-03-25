@@ -1,21 +1,23 @@
+import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { View, Text } from "react-native";
+import ErrorRecord from "./ErrorRecord";
 export default function ErrorList() {
-  const { data, isFetched, isError, status, error } = useQuery({
+  const { data: records } = useQuery<unknown,AxiosError,ErrorRecordTypeWithId[]>({
     queryKey: ["error-list"],
     queryFn: async () => {
       console.log("start!")
-      const response = await axios.get("http://192.168.0.112:3000/records");
-      console.log(response.data.data[0].content)
-      return response;
+      const response = await axios.get<AxiosResponse>("http://192.168.0.112:3000/records")
+      return response.data.data;
     },
   });
 
   return (
     <View>
-      <Text>{error?.name}</Text>
-      <Text>{error?.message}</Text>
+      {records && records.map(record => {
+        return <ErrorRecord record={record} />
+      })}
     </View>
   );
 }
