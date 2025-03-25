@@ -3,6 +3,7 @@ import  controller from "./controllers.js"
 import { body } from "express-validator";
 import { PrismaClient } from "@prisma/client";
 import errorHandler from "./errorHandler.js";
+import cors from "cors"
 const app = express();
 
 const prisma = new PrismaClient()
@@ -33,7 +34,7 @@ const robotIds = [
     "r10",
     "r11"
 ]
-
+app.use(cors())
 app.use(express.json())
 app.get("/records", controller.get_all_error_records);
 app.get("/records/:id", controller.get_error_record);
