@@ -1,7 +1,7 @@
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import ErrorRecord from "./ErrorRecord";
 export default function ErrorList() {
   const { data: records } = useQuery<unknown,AxiosError,ErrorRecordTypeWithId[]>({
@@ -14,10 +14,10 @@ export default function ErrorList() {
   });
 
   return (
-    <View>
+    <ScrollView>
       {records && records.map(record => {
         return <ErrorRecord record={record} />
       })}
-    </View>
+    </ScrollView>
   );
 }
