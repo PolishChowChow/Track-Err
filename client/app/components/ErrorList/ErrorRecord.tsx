@@ -19,8 +19,6 @@ export default function ErrorRecord({ record }: ErrorRecordProps) {
         </View>
         <View style={styles.contentRow}>
           <Text>{record.content}</Text>
-          {/* <Button title="hey" /> */}
-          {/* <Button title="hoo" /> */}
         </View>
       </View>
     </View>

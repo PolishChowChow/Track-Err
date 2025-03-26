@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import ErrorList from "./components/ErrorList";
+import ErrorList from "./components/ErrorList/ErrorList";
 
 
 export default function Index() {

@@ -23,7 +23,6 @@ export default function ErrorRecordWrapper({record}: ErrorRecordProps) {
     .onEnd(() => {
       if (translateX.value < -100) {
         translateX.value = withTiming(-300, { duration: 150 });
-        console.log("working1")
       } else {
         translateX.value = withSpring(0);
       }
@@ -38,7 +37,7 @@ export default function ErrorRecordWrapper({record}: ErrorRecordProps) {
   }));
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }} >
       <View style={styles.container}>
         <View style={styles.deleteBackground}>
           <Text style={styles.deleteText}>🗑️ Delete</Text>

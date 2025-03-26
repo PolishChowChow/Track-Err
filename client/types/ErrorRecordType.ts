@@ -1,3 +1,4 @@
+export type Id = { id: string }
 export type ErrorRecordType = {
     date: string
     workstation: string
@@ -7,4 +8,4 @@ export type ErrorRecordType = {
     mountingStation?: string
     content: string
 }
-export type ErrorRecordTypeWithId = ErrorRecordType & { id: string }
+export type ErrorRecordTypeWithId = ErrorRecordType & Id

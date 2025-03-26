@@ -1,24 +1,20 @@
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { View, Text, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { StyleSheet } from "react-native";
-import ErrorRecord from "./ErrorRecord";
-import ErrorRecordWrapper from "./ErrorRecordWrapper";
+import  ErrorRecordWrapper from "./ErrorRecordWrapper"
+import queryFn from "@/app/utils/queryFn";
+
 export default function ErrorList() {
   const { data: records } = useQuery<unknown,AxiosError,ErrorRecordTypeWithId[]>({
     queryKey: ["error-list"],
-    queryFn: async () => {
-      console.log("start!")
-      const response = await axios.get<AxiosResponse>("http://192.168.0.112:3000/records")
-      console.log(response.data.data[0])
-      return response.data.data;
-    },
+    queryFn: queryFn.getAllRecords
   });
   return (
     <ScrollView style={styles.container}>
       {records && records.map(record => {
-        return <ErrorRecordWrapper record={record} />
+        return <ErrorRecordWrapper record={record} key={record.id}/>
       })}
     </ScrollView>
   );
