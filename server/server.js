@@ -66,7 +66,7 @@ app.post("/records",
             }
         })
         const result = records.filter(record => {
-            return record.tableId === tableId
+            return record.name === tableId
         })
         if(result.length !== 1){
             throw new Error('Invalid tableId')
@@ -82,7 +82,7 @@ app.post("/records",
             }
         })
         const result = records.filter(record => {
-            return record.robotId === robotId
+            return record.name === robotId
         })
         if(result.length !== 1){
             throw new Error('Invalid robotId')

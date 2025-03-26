@@ -13,15 +13,11 @@ export default function ErrorRecord({ record }: ErrorRecordProps) {
       </View>
       <View>
         <View style={styles.titleRow}>
-          <Text style={styles.cell}>{record.workstation}</Text>
-          <Text style={styles.cell}>{record.reference}, </Text>
-          <Text style={styles.cell}>{record.tableId}, </Text>
           <Text style={styles.cell}>
-            {record.robotId} {record.mountingStation && ", "}{" "}
+          {record.workstation} - {record.reference} - {record.tableId} - {record.robotId} - {record.mountingStation || "none"}
           </Text>
-          <Text style={styles.cell}>{record.mountingStation || "none"}</Text>
         </View>
-        <View>
+        <View style={styles.contentRow}>
           <Text>{record.content}</Text>
           {/* <Button title="hey" /> */}
           {/* <Button title="hoo" /> */}
@@ -32,13 +28,17 @@ export default function ErrorRecord({ record }: ErrorRecordProps) {
 }
 const styles = StyleSheet.create({
   row: {
+    marginBottom: 10,
     display: "flex",
     flexDirection: "row",
-    // flexWrap: "wrap",
-    width: 300
+    width: 300,
+    backgroundColor: "#FFDDAB",
+    borderRadius: 4
+
   },
   cell: {
     padding: 5,
+    fontWeight: "bold"
   },
   titleRow: {
     display: "flex",
@@ -48,6 +48,11 @@ const styles = StyleSheet.create({
   dateRow: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "orange"
+  },
+  contentRow: {
+    padding: 5,
+    wordWrap: "wrap"
   }
 });
