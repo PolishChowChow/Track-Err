@@ -1,6 +1,6 @@
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
-import { Button, StyleSheet, Text, View } from "react-native";
-type ErrorRecordProps = {
+import { StyleSheet, Text, View } from "react-native";
+export type ErrorRecordProps = {
   record: ErrorRecordTypeWithId;
 };
 export default function ErrorRecord({ record }: ErrorRecordProps) {
@@ -32,13 +32,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: 300,
-    backgroundColor: "#FFDDAB",
     borderRadius: 4
 
   },
   cell: {
     padding: 5,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   titleRow: {
     display: "flex",
@@ -49,7 +48,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "orange"
   },
   contentRow: {
     padding: 5,

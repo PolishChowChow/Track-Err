@@ -25,7 +25,7 @@ const get_all_error_records = async(req, res, next) => {
         })
     }
     return res.status(200).json({
-        data: error_records
+        data: error_records.reverse()
     })
 }
 
