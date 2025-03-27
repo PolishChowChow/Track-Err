@@ -103,4 +103,4 @@ app.post("/records",
 app.put("/records/:id", controller.update_error_record);
 app.delete("/records", controller.delete_all_error_records);
 app.delete("/records/:id", controller.delete_error_record);
-app.listen(3000, () => console.log(`server listening on port ${3000}`));
+app.listen(3000 , "0.0.0.0", () => console.log(`server listening on port ${3000}`));

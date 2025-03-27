@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: polishchowchow
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: polishchowchow
+    ports:
+      - "5432:5432" 
+
+  backend:
+    build: .
+    container_name: express_backend
+    depends_on:
+      - postgres
+    environment:
+     DATABASE_URL: "postgresql://polishchowchow:password@postgres:5432/polishchowchow"
+    ports:
+      - "3000:3000"
