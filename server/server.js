@@ -1,3 +1,5 @@
+import "dotenv/config"
+console.log(process.env.DATABASE_URL)
 import express from "express";
 import  controller from "./controllers.js"
 import { body } from "express-validator";

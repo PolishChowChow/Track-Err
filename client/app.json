@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.bbutter98.client"
     },
     "web": {
       "bundler": "metro",
@@ -35,7 +36,16 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "react-native-fabric-enabled": false
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ebe90f95-e0ae-40aa-a501-7ee23bf11646"
+      }
     }
   }
 }

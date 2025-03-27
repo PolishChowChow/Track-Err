@@ -1,54 +1,72 @@
-import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
+import React, { useEffect, useRef } from "react";
 import {
-  GestureHandlerRootView,
-  GestureDetector,
-  Gesture,
-} from "react-native-gesture-handler";
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  PanResponder,
+  Animated,
+} from "react-native";
 import ErrorRecord, { ErrorRecordProps } from "./ErrorRecord";
+import { UseMutateAsyncFunction } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
-export default function ErrorRecordWrapper({record}: ErrorRecordProps) {
-  const translateX = useSharedValue(0);
+type ErrorRecordWrapperProps = {
+  onDelete: UseMutateAsyncFunction<AxiosResponse<any, any>, Error, string, void>
+  afterDelete: (id: string) => void
+} & ErrorRecordProps
+export default function ErrorRecordWrapper({ record, onDelete, afterDelete }: ErrorRecordWrapperProps) {
+  const panX = useRef(new Animated.Value(0)).current;
+  const latestX = useRef(0);
+  const opacity = useRef(new Animated.Value(1)).current;
 
-  const panGesture = Gesture.Pan()
-    .onUpdate((event) => {
-        translateX.value = Math.max(event.translationX, -300);
-    })
-    .onEnd(() => {
-      if (translateX.value < -100) {
-        translateX.value = withTiming(-300, { duration: 150 });
-      } else {
-        translateX.value = withSpring(0);
-      }
+  useEffect(() => {
+    const listenerId = panX.addListener((pan_x) => {
+      latestX.current = pan_x.value;
     });
+    return () => panX.removeListener(listenerId);
+  }, []);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: translateX.value,
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gestureHandler) => {
+        Animated.event([null, { dx: panX }], { useNativeDriver: false })(
+          event,
+          gestureHandler
+        );
       },
-    ],
-  }));
+      onPanResponderRelease: () => {
+        console.log("CUR: ", latestX.current);
+        const modifiedValue = latestX.current > -150 ? 0 : -300;
+        Animated.spring(panX, {
+          toValue: modifiedValue,
+          useNativeDriver: false,
+        }).start(async() => {
+          if(modifiedValue === -300){
+            const result = await onDelete(record.id)
+            if(result.status === 200){
+              afterDelete(record.id)
+            }
+          }
+        });
+      },
+    })
+  ).current;
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }} >
-      <View style={styles.container}>
-        <View style={styles.deleteBackground}>
-          <Text style={styles.deleteText}>🗑️ Delete</Text>
-        </View>
-        <GestureDetector gesture={panGesture}>
-          <Animated.View style={[styles.swipeable, animatedStyle]}>
-            <ErrorRecord record={record} />
-          </Animated.View>
-        </GestureDetector>
-      </View>
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <View style={styles.background}></View>
+
+      <Animated.View
+        style={{
+          transform: [{ translateX: panX }],
+        }}
+        {...panResponder.panHandlers}
+      >
+        <ErrorRecord record={record} />
+      </Animated.View>
+    </View>
   );
 }
 
@@ -57,7 +75,7 @@ const styles = StyleSheet.create({
     position: "relative",
     marginVertical: 8,
   },
-  deleteBackground: {
+  background: {
     position: "absolute",
     right: 0,
     top: 0,
@@ -66,22 +84,15 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     justifyContent: "center",
     alignItems: "flex-end",
-    padding: 30,
-    borderRadius: 10,
   },
-  deleteText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "right"
-  },
-  swipeable: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
-    elevation: 3,
-  },
-  text: {
+  main: {
     fontSize: 16,
+    backgroundColor: "white",
+    borderRadius: 4,
+  },
+  box: {
+    width: 200,
+    height: 200,
+    backgroundColor: "blue",
   },
 });
