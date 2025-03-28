@@ -1,15 +1,15 @@
+import dateParser from "@/app/utils/dateParser";
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { StyleSheet, Text, View } from "react-native";
 export type ErrorRecordProps = {
   record: ErrorRecordTypeWithId;
 };
 export default function ErrorRecord({ record }: ErrorRecordProps) {
-  const dateParser = new Date(record.date);
-  const day = dateParser.toLocaleTimeString();
+  const time = dateParser(record.date)
   return (
     <View key={record.id} style={styles.row}>
       <View style = {styles.dateRow}>
-        <Text style={styles.cell}>{day}</Text>
+        <Text style={styles.cell}>{time}</Text>
       </View>
       <View>
         <View style={styles.titleRow}>
