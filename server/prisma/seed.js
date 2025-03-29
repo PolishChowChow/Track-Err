@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.structures.deleteMany({})
   await prisma.structures.createMany({
     data: [
       { type: 'workstation', name: 'LP1' },
@@ -33,7 +34,6 @@ async function main() {
       { type: 'mountingStation', name: 'm2' },
     ],
   });
-
   console.log('Seed data inserted');
 }
 
