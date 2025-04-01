@@ -1,6 +1,5 @@
 import { Text, View } from "react-native";
-import ErrorList from "./components/ErrorList/ErrorList";
-
+import ErrorList from "../components/ErrorList/ErrorList";
 
 export default function Index() {
   return (
@@ -11,7 +10,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text></Text>
+      <Text>Test list</Text>
       <ErrorList />
     </View>
   );
