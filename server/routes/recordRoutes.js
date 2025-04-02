@@ -1,5 +1,5 @@
 import { Router } from "express";
-import controller from "../controllers/controllers.js";
+import controller from "../controllers/recordControllers.js";
 import { body } from "express-validator";
 import errorHandler from "../utils/errorHandler.js";
 import { PrismaClient } from "@prisma/client";

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
 
-const get_error_record = async(req, res, next) => {
+const get_error_record = async(req, res) => {
     const error_record = await prisma.errorRecords.findFirst({
         where: {
             id: req.params.id
@@ -17,7 +17,7 @@ const get_error_record = async(req, res, next) => {
     })
 }
 
-const get_all_error_records = async(req, res, next) => {
+const get_all_error_records = async(req, res) => {
     const error_records = await prisma.errorRecords.findMany();
     if(error_records.length < 1){
         return res.status(404).json({
@@ -29,7 +29,7 @@ const get_all_error_records = async(req, res, next) => {
     })
 }
 
-const save_error_record = async(req, res, next) => {
+const save_error_record = async(req, res) => {
     await prisma.errorRecords.create({
         data: {
             ...req.body,
@@ -46,7 +46,7 @@ const save_error_record = async(req, res, next) => {
     })
 }
 
-const update_error_record = async(req, res, next) => {
+const update_error_record = async(req, res) => {
     await prisma.errorRecords.update({
         where: {
             id: req.params.id
@@ -65,7 +65,7 @@ const update_error_record = async(req, res, next) => {
     })
 }
 
-const delete_error_record = async(req, res, next) => {
+const delete_error_record = async(req, res) => {
     await prisma.errorRecords.delete({
         where: {
             id: req.params.id
@@ -81,7 +81,7 @@ const delete_error_record = async(req, res, next) => {
     })
 }
 
-const delete_all_error_records = async(req, res, next) => {
+const delete_all_error_records = async(req, res) => {
     await prisma.errorRecords.deleteMany()
     .then((response) => {
         return res.status(200).json({
