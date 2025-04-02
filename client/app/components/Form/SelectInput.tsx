@@ -13,17 +13,17 @@ export default function SelectInput({
   label,
   control,
 }: SelectInputType) {
-  const pickers = records.map((record) => (
-    <Picker.Item label={record} value={record} />
+  const pickers = records.map((record, key) => (
+    <Picker.Item label={record} value={record} key={key} />
   ));
 
   return (
     <Controller
       control={control}
       name={label}
-      render={({ field: { onChange, value } }) => {
+      render={({ field: { onChange, value }}) => {
         return (
-          <Picker selectedValue={value} onValueChange={onChange}>
+          <Picker selectedValue={value} onValueChange={onChange} >
             {pickers}
           </Picker>
         );

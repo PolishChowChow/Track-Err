@@ -3,28 +3,56 @@ import { View, Text, Button } from "react-native";
 import { ErrorRecordType } from "@/types/ErrorRecordType";
 import SelectInput from "./SelectInput";
 import { useQuery } from "@tanstack/react-query";
+import queryFn from "@/app/utils/queries/queryFn";
+import { StructureRecordTypeWithId } from "@/types/StructureType";
+import { AxiosError } from "axios";
+import useGroupedStructuresByType from "@/app/utils/pipelines/useGroupedStructuresByType";
 
 export type FormFieldsType = Omit<ErrorRecordType, "date">;
 
 const defaultValues: FormFieldsType = {
-  workstation: "LP1",
+  workstation: "LP2",
   reference: "MPDB",
   tableId: "t101",
   robotId: "r01",
-  mountingStation: "none",
+  mountingStation: "m1",
   content: "",
 };
 export default function Form() {
   const { control } = useForm({
     defaultValues,
   });
+  const {
+    data: fetchedStructures,
+    isError,
+    isLoading,
+  } = useQuery<unknown, AxiosError, StructureRecordTypeWithId[]>({
+    queryKey: ["structures"],
+    queryFn: queryFn.getAllStructures,
+  });
+  if (isError || fetchedStructures === undefined) {
+    return (
+      <View>
+        <Text>Error fetching</Text>
+      </View>
+    );
+  }
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Is loading</Text>
+      </View>
+    );
+  }
 
+  const { workstations, references, tables, robots, mountingStations } =
+    useGroupedStructuresByType(fetchedStructures);
   return (
     <View>
       <View>
         <Text>Select workstation: </Text>
         <SelectInput
-          records={["LP1", "LP2"]}
+          records={workstations}
           label="workstation"
           control={control}
         />
@@ -32,7 +60,7 @@ export default function Form() {
       <View>
         <Text>Selected reference:</Text>
         <SelectInput
-          records={["MPDB", "ICE", "TRYOUT"]}
+          records={references}
           label="reference"
           control={control}
         />
@@ -40,16 +68,7 @@ export default function Form() {
       <View>
         <Text>Selected tableid:</Text>
         <SelectInput
-          records={[
-            "t101",
-            "t102",
-            "t301",
-            "t302",
-            "t303",
-            "t304",
-            "t50",
-            "t60",
-          ]}
+          records={tables}
           label="tableId"
           control={control}
         />
@@ -57,8 +76,16 @@ export default function Form() {
       <View>
         <Text>Selected robotId:</Text>
         <SelectInput
-          records={["r01", "r02", "r03", "r04", "r05", "r06", "r07", "r08"]}
+          records={robots}
           label="robotId"
+          control={control}
+        />
+      </View>
+      <View>
+        <Text>Selected mounting station:</Text>
+        <SelectInput
+          records={mountingStations}
+          label="mountingStation"
           control={control}
         />
       </View>
@@ -66,7 +93,7 @@ export default function Form() {
         <Text>Select error:</Text>
         <SelectInput
           records={["Wirestick", "SKP", "Freeze error"]}
-          label="robotId"
+          label="content"
           control={control}
         />
       </View>
