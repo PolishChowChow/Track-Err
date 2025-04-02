@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import ErrorRecordWrapper from "./ErrorRecordWrapper";
-import queryFn from "@/app/utils/queryFn";
+import queryFn from "@/app/utils/queries/queryFn";
 import { useEffect, useState } from "react";
 
 export default function ErrorList() {

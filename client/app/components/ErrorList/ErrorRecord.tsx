@@ -1,4 +1,4 @@
-import dateParser from "@/app/utils/dateParser";
+import dateParser from "@/app/utils/queries/dateParser";
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { StyleSheet, Text, View } from "react-native";
 export type ErrorRecordProps = {

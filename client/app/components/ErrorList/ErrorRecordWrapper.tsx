@@ -10,8 +10,8 @@ import {
 import ErrorRecord, { ErrorRecordProps } from "./ErrorRecord";
 import { UseMutateAsyncFunction } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import useGettingValueFromPanResponder from "@/app/utils/useGettingValueFromPanResponder";
-import usePanResponderToSwipeComponent from "@/app/utils/usePanResponderToSwipeComponent";
+import useGettingValueFromPanResponder from "@/app/utils/panResponder/useGettingValueFromPanResponder";
+import usePanResponderToSwipeComponent from "@/app/utils/panResponder/usePanResponderToSwipeComponent";
 
 type ErrorRecordWrapperProps = {
   onDelete: UseMutateAsyncFunction<
