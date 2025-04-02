@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { View, Text, Button } from "react-native";
 import { ErrorRecordType } from "@/types/ErrorRecordType";
 import SelectInput from "./SelectInput";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import queryFn from "@/app/utils/queries/queryFn";
 import { StructureRecordTypeWithId } from "@/types/StructureType";
 import { AxiosError } from "axios";
@@ -16,12 +16,14 @@ const defaultValues: FormFieldsType = {
   tableId: "t101",
   robotId: "r01",
   mountingStation: "m1",
-  content: "",
+  content: "Wirestick",
 };
 export default function Form() {
-  const { control } = useForm({
+  const queryClient = useQueryClient();
+  const { control, handleSubmit } = useForm({
     defaultValues,
   });
+
   const {
     data: fetchedStructures,
     isError,
@@ -29,6 +31,20 @@ export default function Form() {
   } = useQuery<unknown, AxiosError, StructureRecordTypeWithId[]>({
     queryKey: ["structures"],
     queryFn: queryFn.getAllStructures,
+  });
+
+  const { mutateAsync: createRecord } = useMutation({
+    mutationFn: queryFn.createRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["error-list"],
+        exact: true,
+      });
+    },
+  });
+
+  const submitHandler = handleSubmit((data) => {
+    createRecord(data);
   });
   if (isError || fetchedStructures === undefined) {
     return (
@@ -44,7 +60,6 @@ export default function Form() {
       </View>
     );
   }
-
   const { workstations, references, tables, robots, mountingStations } =
     useGroupedStructuresByType(fetchedStructures);
   return (
@@ -59,27 +74,15 @@ export default function Form() {
       </View>
       <View>
         <Text>Selected reference:</Text>
-        <SelectInput
-          records={references}
-          label="reference"
-          control={control}
-        />
+        <SelectInput records={references} label="reference" control={control} />
       </View>
       <View>
         <Text>Selected tableid:</Text>
-        <SelectInput
-          records={tables}
-          label="tableId"
-          control={control}
-        />
+        <SelectInput records={tables} label="tableId" control={control} />
       </View>
       <View>
         <Text>Selected robotId:</Text>
-        <SelectInput
-          records={robots}
-          label="robotId"
-          control={control}
-        />
+        <SelectInput records={robots} label="robotId" control={control} />
       </View>
       <View>
         <Text>Selected mounting station:</Text>
@@ -97,7 +100,7 @@ export default function Form() {
           control={control}
         />
       </View>
-      <Button title="Submit" />
+      <Button title="Submit" onPress={submitHandler} />
     </View>
   );
 }
