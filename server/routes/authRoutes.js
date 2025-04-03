@@ -1,7 +1,8 @@
 import { Router } from "express";
-import authControllers from "../controllers/authControllers.js"
+import { getOtp, checkOtp } from "../controllers/authControllers.js"
 const authRouter = Router();
 
-authRouter.get("/otp", authControllers)
+authRouter.get("/getOtp", getOtp)
+authRouter.get("/checkOtp", checkOtp)
 
 export default authRouter;
