@@ -73,3 +73,6 @@ export const verifyJwt = async(req, res, next) => {
   next();
 }
 
+export const positiveJwtResponse = async(req, res, next) => {
+  return res.sendStatus(200);
+}
