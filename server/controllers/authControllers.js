@@ -61,3 +61,15 @@ export const checkOtp = async(req, res) => {
     })
 }
 
+export const verifyJwt = async(req, res, next) => {
+  const token = req.cookies.auth_token;
+  if(!token){
+    return res.sendStatus(401)
+  }
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  if(!decodedToken === process.env.T_DESTINATION){
+    return res.sendStatus(401)
+  }
+  next();
+}
+
