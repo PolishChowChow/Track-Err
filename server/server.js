@@ -8,7 +8,9 @@ import structureRouter from "./routes/structureRoute.js";
 import authRouter from "./routes/authRoutes.js";
 const app = express();
 
+import cookieParser from "cookie-parser";
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(headerChecker);

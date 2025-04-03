@@ -1,7 +1,8 @@
 import { generate } from "otp-generator";
 import twilio from "twilio";
 import redisClient from "./redisController.js";
-
+import jwt from "jsonwebtoken";
+import COOKIE_OPTIONS from "../utils/cookieOptions.js";
 export const getOtp = async (req, res, next) => {
   const client = twilio(process.env.T_SID, process.env.T_AUTH_TOKEN);
   const otpCode = generate(6, {
@@ -29,7 +30,7 @@ export const getOtp = async (req, res, next) => {
   //     return res.sendStatus(400);
   //   });
     redisClient.set("otp", otpCode, {
-      EX: 1
+      EX: 60
     });
     return res.status(201).json({
       otp: otpCode
@@ -48,7 +49,13 @@ export const checkOtp = async(req, res) => {
         message: "Incorrect OTP"
       })
     }
-    
+    const token = jwt.sign(process.env.T_DESTINATION, process.env.JWT_SECRET)
+    if(!token){
+      return res.status(400).json({
+        message: "Proble while creating token"
+      })
+    }
+    res.cookie("auth_token", token, COOKIE_OPTIONS)
     return res.status(200).json({
         otp: checker
     })
