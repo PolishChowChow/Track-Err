@@ -1,7 +1,6 @@
-import { AxiosResponse } from "axios"; //WYPIOERDALAĆ WSZYSCY
+import { AxiosResponse } from "axios"; 
 import apiClient from "./apiClient";
 import { FormFieldsType } from "@/app/components/Form/Form";
-
 const queryFn = {
   getAllRecords: async () => {
     const response = await apiClient.get<AxiosResponse>("/records");
@@ -11,12 +10,9 @@ const queryFn = {
     const response = await apiClient.post<AxiosResponse>("/records", {
       ...record,
     });
-    console.log(response);
-
     return response;
   },
   removeRecord: async (id: string) => {
-    console.log("an attemptd to remove a record with an id: ", id);
     if (id.length === 0) {
       throw Error("removeRecord(): no id provided");
     }

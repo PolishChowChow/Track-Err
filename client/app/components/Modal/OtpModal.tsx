@@ -9,8 +9,6 @@ import {
   Button,
   StyleSheet,
   StatusBar,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
@@ -37,16 +35,16 @@ export default function OtpModal({
     onSuccess: () => {
       setOtpData({
         value: "",
-        error: ""
-      })
-      setIsVisible(false)
+        error: "",
+      });
+      setIsVisible(false);
     },
-    onError: (error => {
+    onError: (error) => {
       setOtpData({
         value: "",
-        error: error.message
-      })
-    })
+        error: error.message,
+      });
+    },
   });
   const handleSubmit = () => {
     if (otpData.value.length !== 6) {
@@ -55,11 +53,9 @@ export default function OtpModal({
           ...prevOtpData,
           error: "Invalid OTP Length",
         };
-      })
-    }
-    else{
+      });
+    } else {
       verifyOtp(otpData.value);
-      
     }
   };
   return (
@@ -85,13 +81,11 @@ export default function OtpModal({
                 keyboardType="numeric"
                 maxLength={6}
                 value={otpData.value}
-                onChange={(
-                  e: NativeSyntheticEvent<TextInputChangeEventData>
-                ) => {
+                onChangeText={(text: string) => {
                   setOtpData((prevOtpData) => {
                     return {
                       ...prevOtpData,
-                      value: e.nativeEvent.text,
+                      value: text,
                     };
                   });
                 }}
@@ -150,6 +144,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   ruby: {
-    color: "#800"
-  }
+    color: "#800",
+  },
 });

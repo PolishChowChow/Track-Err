@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import OtpModal from "../Modal/OtpModal";
 
 export default function ErrorList() {
+
   const [isModalVisible, setIsModalVisible] = useState(true);
   const queryClient = useQueryClient();
   const { data: records } = useQuery<

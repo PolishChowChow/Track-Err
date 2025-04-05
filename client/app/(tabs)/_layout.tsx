@@ -3,14 +3,10 @@
 import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, Text } from "react-native";
-import { useNavigation } from "expo-router";
-import { useEffect } from "react";
+// import { useNavigation } from "expo-router";
+// import { useEffect } from "react";
 export default function Layout() {
-  const navigation = useNavigation();
-  useEffect(()=>{
-    console.log(navigation.getState());
-    
-  },[navigation])
+  // const navigation = useNavigation();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Tabs>
