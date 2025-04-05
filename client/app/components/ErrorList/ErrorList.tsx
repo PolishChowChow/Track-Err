@@ -5,8 +5,10 @@ import { ScrollView, StyleSheet, Text } from "react-native";
 import ErrorRecordWrapper from "./ErrorRecordWrapper";
 import queryFn from "@/app/utils/queries/queryFn";
 import { useEffect, useState } from "react";
+import OtpModal from "../Modal/OtpModal";
 
 export default function ErrorList() {
+  const [isModalVisible, setIsModalVisible] = useState(true);
   const queryClient = useQueryClient();
   const { data: records } = useQuery<
     unknown,
@@ -50,7 +52,7 @@ export default function ErrorList() {
             />
           );
         })}
-      <Text>Hi</Text>
+      <OtpModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} closeModalCallback={() => console.log("closed!!! Hurra")}/>
     </ScrollView>
   );
 }

@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(headerChecker);
-app.use(verifyJwt);
+// app.use(verifyJwt);
 app.use("/records", recordRouter);
 app.use("/structures", structureRouter);
 app.use("/auth", authRouter);
