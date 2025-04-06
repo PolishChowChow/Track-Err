@@ -11,12 +11,7 @@ import useGettingValueFromPanResponder from "@/app/utils/panResponder/useGetting
 import usePanResponderToSwipeComponent from "@/app/utils/panResponder/usePanResponderToSwipeComponent";
 
 type ErrorRecordWrapperProps = {
-  onDelete: UseMutateAsyncFunction<
-    AxiosResponse<any, any>,
-    Error,
-    string,
-    void
-  >;
+  onDelete: UseMutateAsyncFunction<AxiosResponse<AxiosResponse<any, any>, any> | undefined, Error, string, void>;
   afterDelete: (id: string) => void;
 } & ErrorRecordProps;
 export default function ErrorRecordWrapper({
@@ -33,7 +28,7 @@ export default function ErrorRecordWrapper({
     -300,
     async () => {
       const result = await onDelete(record.id);
-      if (result.status === 200) {
+      if (!result || result.status === 200) {
         afterDelete(record.id);
       }
     }

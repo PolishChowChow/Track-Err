@@ -1,40 +1,70 @@
-import { AxiosResponse } from "axios"; 
+import { AxiosError, AxiosResponse } from "axios";
 import apiClient from "./apiClient";
 import { FormFieldsType } from "@/app/components/Form/Form";
+import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
+import queryErrorHandler from "./queryErrorHandler";
+import { StructureRecordTypeWithId } from "@/types/StructureType";
+export const delay = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
 const queryFn = {
   getAllRecords: async () => {
-    const response = await apiClient.get<AxiosResponse>("/records");
-    return response.data.data;
+    try {
+      const { data } = await apiClient.get<{ data: ErrorRecordTypeWithId[] }>(
+        "/records"
+      );
+      return data.data || [];
+    } catch (err) {
+      queryErrorHandler(err);
+    }
   },
   createRecord: async (record: FormFieldsType) => {
-    const response = await apiClient.post<AxiosResponse>("/records", {
-      ...record,
-    });
-    return response;
+    try {
+      const response = await apiClient.post<AxiosResponse>("/records", {
+        ...record,
+      });
+      return response;
+    } catch (err) {
+      queryErrorHandler(err);
+    }
   },
   removeRecord: async (id: string) => {
     if (id.length === 0) {
       throw Error("removeRecord(): no id provided");
     }
-    const response = await apiClient.delete<AxiosResponse>(`/records/${id}`);
-    return response;
+    try {
+      const response = await apiClient.delete<AxiosResponse>(`/records/${id}`);
+      return response;
+    } catch (err) {
+      queryErrorHandler(err);
+    }
   },
   getAllStructures: async () => {
-    const response = await apiClient.get<AxiosResponse>("/structures");
-    return response.data.data;
+    await delay(5000)
+    try {
+      const response = await apiClient.get<{data: StructureRecordTypeWithId[]}>("/structures");
+      return response.data.data;
+    } catch (err) {
+      queryErrorHandler(err);
+    }
   },
   getOtp: async () => {
-    const response = await apiClient.get<AxiosResponse>("/auth/getOtp");
-    return response;
+    try {
+      const response = await apiClient.get<AxiosResponse>("/auth/getOtp");
+      return response;
+    } catch (err) {
+      queryErrorHandler(err);
+    }
   },
   verifyOtp: async (otp: string) => {
-    await apiClient.post<AxiosResponse>("/auth/checkOtp", {
-      otp,
-    })
-    .then(response => response)
-    .catch(error => {
-        throw new Error("bad")
-    })
+    try {
+      const response = await apiClient.post<AxiosResponse>("/auth/checkOtp", {
+        otp,
+      });
+      return response;
+    } catch (err) {
+      queryErrorHandler(err);
+    }
   },
 };
 

@@ -6,12 +6,14 @@ import ErrorRecordWrapper from "./ErrorRecordWrapper";
 import queryFn from "@/app/utils/queries/queryFn";
 import { useEffect, useState } from "react";
 import OtpModal from "../Modal/OtpModal";
+import Loading from "../Lifecycle/Loading";
+import ErrorComponent from "../Lifecycle/ErrorComponent";
 
 export default function ErrorList() {
 
-  const [isModalVisible, setIsModalVisible] = useState(true);
+  // const [isModalVisible, setIsModalVisible] = useState(true);
   const queryClient = useQueryClient();
-  const { data: records } = useQuery<
+  const { data: records, isLoading, isError, error } = useQuery<
     unknown,
     AxiosError,
     ErrorRecordTypeWithId[]
@@ -40,6 +42,12 @@ export default function ErrorList() {
       });
     },
   });
+  if(isLoading){
+    return <Loading />
+  }
+  if(isError){
+    return <ErrorComponent message={error.message} />
+  }
   return (
     <ScrollView style={styles.container}>
       {errorRecords &&
@@ -53,7 +61,7 @@ export default function ErrorList() {
             />
           );
         })}
-      <OtpModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} closeModalCallback={() => console.log("closed!!! Hurra")}/>
+      {/* <OtpModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} closeModalCallback={() => console.log("closed!!! Hurra")}/> */}
     </ScrollView>
   );
 }

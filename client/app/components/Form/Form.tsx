@@ -7,6 +7,8 @@ import queryFn from "@/app/utils/queries/queryFn";
 import { StructureRecordTypeWithId } from "@/types/StructureType";
 import { AxiosError } from "axios";
 import useGroupedStructuresByType from "@/app/utils/pipelines/useGroupedStructuresByType";
+import ErrorComponent from "../Lifecycle/ErrorComponent";
+import Loading from "../Lifecycle/Loading";
 
 export type FormFieldsType = Omit<ErrorRecordType, "date">;
 
@@ -27,6 +29,7 @@ export default function Form() {
   const {
     data: fetchedStructures,
     isError,
+    error,
     isLoading,
   } = useQuery<unknown, AxiosError, StructureRecordTypeWithId[]>({
     queryKey: ["structures"],
@@ -46,18 +49,15 @@ export default function Form() {
   const submitHandler = handleSubmit((data) => {
     createRecord(data);
   });
-  if (isError || fetchedStructures === undefined) {
-    return (
-      <View>
-        <Text>Error fetching</Text>
-      </View>
-    );
+  if (!fetchedStructures) {
+    return <ErrorComponent message="Invalid data, report this ASAP" />;
+  }
+  if (isError) {
+    return <ErrorComponent message={error?.message} />;
   }
   if (isLoading) {
     return (
-      <View>
-        <Text>Is loading</Text>
-      </View>
+      <Loading />
     );
   }
   const { workstations, references, tables, robots, mountingStations } =
