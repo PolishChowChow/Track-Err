@@ -1,9 +1,9 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import apiClient from "./apiClient";
 import { FormFieldsType } from "@/app/components/Form/Form";
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
-import queryErrorHandler from "./queryErrorHandler";
 import { StructureRecordTypeWithId } from "@/types/StructureType";
+import errorHandler from "./errorHandler";
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -15,7 +15,7 @@ const queryFn = {
       );
       return data.data || [];
     } catch (err) {
-      queryErrorHandler(err);
+      errorHandler(err);
     }
   },
   createRecord: async (record: FormFieldsType) => {
@@ -25,7 +25,7 @@ const queryFn = {
       });
       return response;
     } catch (err) {
-      queryErrorHandler(err);
+      errorHandler(err);
     }
   },
   removeRecord: async (id: string) => {
@@ -36,7 +36,7 @@ const queryFn = {
       const response = await apiClient.delete<AxiosResponse>(`/records/${id}`);
       return response;
     } catch (err) {
-      queryErrorHandler(err);
+      errorHandler(err);
     }
   },
   getAllStructures: async () => {
@@ -45,7 +45,7 @@ const queryFn = {
       const response = await apiClient.get<{data: StructureRecordTypeWithId[]}>("/structures");
       return response.data.data;
     } catch (err) {
-      queryErrorHandler(err);
+      errorHandler(err);
     }
   },
   getOtp: async () => {
@@ -53,7 +53,7 @@ const queryFn = {
       const response = await apiClient.get<AxiosResponse>("/auth/getOtp");
       return response;
     } catch (err) {
-      queryErrorHandler(err);
+      errorHandler(err);
     }
   },
   verifyOtp: async (otp: string) => {
@@ -61,9 +61,10 @@ const queryFn = {
       const response = await apiClient.post<AxiosResponse>("/auth/checkOtp", {
         otp,
       });
+      console.log(response.headers);
       return response;
     } catch (err) {
-      queryErrorHandler(err);
+      errorHandler(err);
     }
   },
 };

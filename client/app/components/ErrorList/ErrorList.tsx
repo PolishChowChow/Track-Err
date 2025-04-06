@@ -11,7 +11,7 @@ import ErrorComponent from "../Lifecycle/ErrorComponent";
 
 export default function ErrorList() {
 
-  // const [isModalVisible, setIsModalVisible] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(true);
   const queryClient = useQueryClient();
   const { data: records, isLoading, isError, error } = useQuery<
     unknown,
@@ -61,7 +61,7 @@ export default function ErrorList() {
             />
           );
         })}
-      {/* <OtpModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} closeModalCallback={() => console.log("closed!!! Hurra")}/> */}
+      <OtpModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} closeModalCallback={() => console.log("closed!!! Hurra")}/>
     </ScrollView>
   );
 }

@@ -11,6 +11,7 @@ import {
   StatusBar,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import ErrorComponent from "../Lifecycle/ErrorComponent";
 
 type OtpModalProps = {
   isVisible: boolean;
@@ -91,7 +92,7 @@ export default function OtpModal({
                 }}
               />
             </View>
-            <Text style={styles.ruby}>{otpData.error}</Text>
+            <ErrorComponent message={otpData.error} />
             <Button title="Submit" onPress={handleSubmit} />
           </View>
         </Modal>
