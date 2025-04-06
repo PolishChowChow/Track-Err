@@ -1,6 +1,6 @@
 import queryFn from "@/app/utils/queries/queryFn";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import {
   Modal,
   View,
@@ -26,23 +26,24 @@ export default function OtpModal({
   setIsVisible,
   closeModalCallback,
 }: OtpModalProps) {
+  const queryClient = useQueryClient();
   const [otpData, setOtpData] = useState({
     value: "",
     error: "",
   });
-  const getOtp = useMutation({
-    mutationFn: async () => {},
-  });
-  const { mutateAsync: verifyOtp } = useMutation
-  <string,AxiosError,string>({
+
+  const { mutateAsync: verifyOtp } = useMutation<string, AxiosError, string>({
     mutationFn: queryFn.verifyOtp,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setOtpData({
         value: "",
         error: "",
       });
-      console.log("data", data);
-      jwtHandler.setJwt(data)
+      await jwtHandler.setJwt(data);
+      queryClient.invalidateQueries({
+        queryKey: ["error-list"],
+        exact: true,
+      });
       setIsVisible(false);
     },
     onError: (error) => {
@@ -64,6 +65,7 @@ export default function OtpModal({
       verifyOtp(otpData.value);
     }
   };
+
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor="#333" />

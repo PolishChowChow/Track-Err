@@ -12,13 +12,15 @@ import cookieParser from "cookie-parser";
 import { verifyJwt } from "./controllers/authControllers.js";
 
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  credentials: true
+}));
 app.use(express.json());
 app.use(headerChecker);
-// app.use(verifyJwt);
+app.use("/auth", authRouter);
+app.use(verifyJwt);
 app.use("/records", recordRouter);
 app.use("/structures", structureRouter);
-app.use("/auth", authRouter);
 app.use(internalServerErrorHandler);
 app.listen(process.env.PORT_FOR_LISTENING, process.env.WORKING_PORT, () =>
   console.log(`server listening on port ${process.env.PORT_FOR_LISTENING}`)

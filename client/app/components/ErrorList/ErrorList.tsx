@@ -8,25 +8,25 @@ import { useEffect, useState } from "react";
 import OtpModal from "../Modal/OtpModal";
 import Loading from "../Lifecycle/Loading";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
+import jwtHandler from "@/app/utils/JWT/jwtHandler";
 
 export default function ErrorList() {
-
-  const [isModalVisible, setIsModalVisible] = useState(true);
   const queryClient = useQueryClient();
-  const { data: records, isLoading, isError, error } = useQuery<
-    unknown,
-    AxiosError,
-    ErrorRecordTypeWithId[]
-  >({
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const {
+    data: records,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<unknown, AxiosError, ErrorRecordTypeWithId[]>({
     queryKey: ["error-list"],
     queryFn: queryFn.getAllRecords,
   });
+
   const [errorRecords, setErrorRecords] = useState<ErrorRecordTypeWithId[]>(
     records || []
   );
-  useEffect(() => {
-    setErrorRecords(records || [])
-  },[records])
   const removeRecordFromUi = (id: string) => {
     setErrorRecords((prevErrorRecords) => {
       return prevErrorRecords.filter((record) => record.id !== id);
@@ -42,11 +42,21 @@ export default function ErrorList() {
       });
     },
   });
-  if(isLoading){
-    return <Loading />
+  
+
+  const deleteJWT = async () =>{
+    await jwtHandler.deleteJwt();
   }
-  if(isError){
-    return <ErrorComponent message={error.message} />
+  useEffect(() => {
+    deleteJWT();
+    setErrorRecords(records || []);
+    
+  }, [records]);
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (isError) {
+    return <ErrorComponent message={error.message} />;
   }
   return (
     <ScrollView style={styles.container}>
@@ -61,7 +71,6 @@ export default function ErrorList() {
             />
           );
         })}
-      <OtpModal isVisible={isModalVisible} setIsVisible={setIsModalVisible} closeModalCallback={() => console.log("closed!!! Hurra")}/>
     </ScrollView>
   );
 }

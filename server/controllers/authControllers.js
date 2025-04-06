@@ -29,50 +29,53 @@ export const getOtp = async (req, res, next) => {
   //     console.error(err);
   //     return res.sendStatus(400);
   //   });
-    redisClient.set("otp", otpCode, {
-      EX: 60
-    });
-    return res.status(201).json({
-      otp: otpCode
-    });
-
+  redisClient.set("otp", otpCode, {
+    EX: 60,
+  });
+  return res.status(201).json({
+    otp: otpCode,
+  });
 };
-export const checkOtp = async(req, res) => {
-    const checker = await redisClient.get("otp");
-    if(checker === null){
-      return res.status(498).json({
-        message: "OTP expired"
-      })
-    }
-    if(checker !== req.body.otp){
-      return res.status(401).json({
-        message: "Incorrect OTP"
-      })
-    }
-    const token = jwt.sign(process.env.T_DESTINATION, process.env.JWT_SECRET)
-    if(!token){
-      return res.status(400).json({
-        message: "Proble while creating token"
-      })
-    }
-    res.cookie("auth_token", token, COOKIE_OPTIONS)
-    return res.status(200).json({
-        otp: checker
-    })
-}
+export const checkOtp = async (req, res) => {
+  const checker = await redisClient.get("otp");
+  if (checker === null) {
+    return res.status(498).json({
+      message: "OTP expired",
+    });
+  }
+  if (checker !== req.body.otp) {
+    return res.status(401).json({
+      message: "Incorrect OTP",
+    });
+  }
+  const token = jwt.sign(process.env.T_DESTINATION, process.env.JWT_SECRET);
+  if (!token) {
+    return res.status(400).json({
+      message: "Proble while creating token",
+    });
+  }
+  res.cookie("auth_token", token, COOKIE_OPTIONS);
+  return res.status(200).json({
+    otp: checker,
+  });
+};
 
-export const verifyJwt = async(req, res, next) => {
+export const verifyJwt = async (req, res, next) => {
   const token = req.cookies.auth_token;
-  if(!token){
-    return res.sendStatus(401)
+  if (!token) {
+    return res.sendStatus(401);
   }
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  if(!decodedToken === process.env.T_DESTINATION){
-    return res.sendStatus(401)
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    if (!decodedToken === process.env.T_DESTINATION) {
+      return res.sendStatus(401);
+    }
+    next();
+  } catch (e) {
+    return res.sendStatus(401);
   }
-  next();
-}
+};
 
-export const positiveJwtResponse = async(req, res, next) => {
+export const positiveJwtResponse = async (req, res, next) => {
   return res.sendStatus(200);
-}
+};

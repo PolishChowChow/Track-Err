@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import ErrorList from "../components/ErrorList/ErrorList";
+import ErrorListWrapper from "../components/ErrorList/ErrorListWrapper";
 
 export default function Index() {
   return (
@@ -11,7 +12,7 @@ export default function Index() {
       }}
     >
       <Text>Test list</Text>
-      <ErrorList />
+      <ErrorListWrapper />
     </View>
   );
 }
