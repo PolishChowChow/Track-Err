@@ -11,5 +11,8 @@ export default {
       API_URL_REMOTE: process.env.API_URL_REMOTE,
       ENV: process.env.ENV,
     },
+    android: {
+      package: "com.bbutter98.TrackErr",
+    },
   },
 };

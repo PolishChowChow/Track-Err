@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
+import jwtHandler from "@/app/utils/JWT/jwtHandler";
+import { AxiosError } from "axios";
 
 type OtpModalProps = {
   isVisible: boolean;
@@ -31,13 +33,16 @@ export default function OtpModal({
   const getOtp = useMutation({
     mutationFn: async () => {},
   });
-  const { mutateAsync: verifyOtp } = useMutation({
+  const { mutateAsync: verifyOtp } = useMutation
+  <string,AxiosError,string>({
     mutationFn: queryFn.verifyOtp,
-    onSuccess: () => {
+    onSuccess: (data) => {
       setOtpData({
         value: "",
         error: "",
       });
+      console.log("data", data);
+      jwtHandler.setJwt(data)
       setIsVisible(false);
     },
     onError: (error) => {

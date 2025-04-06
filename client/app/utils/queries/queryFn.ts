@@ -4,6 +4,7 @@ import { FormFieldsType } from "@/app/components/Form/Form";
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { StructureRecordTypeWithId } from "@/types/StructureType";
 import errorHandler from "./errorHandler";
+import jwtParser from "../JWT/jwtParser";
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -40,9 +41,11 @@ const queryFn = {
     }
   },
   getAllStructures: async () => {
-    await delay(5000)
+    // await delay(5000)
     try {
-      const response = await apiClient.get<{data: StructureRecordTypeWithId[]}>("/structures");
+      const response = await apiClient.get<{
+        data: StructureRecordTypeWithId[];
+      }>("/structures");
       return response.data.data;
     } catch (err) {
       errorHandler(err);
@@ -56,13 +59,20 @@ const queryFn = {
       errorHandler(err);
     }
   },
-  verifyOtp: async (otp: string) => {
+  verifyOtp: async (otp: string) : Promise<string> => {
     try {
       const response = await apiClient.post<AxiosResponse>("/auth/checkOtp", {
         otp,
       });
-      console.log(response.headers);
-      return response;
+      const header = response.headers["set-cookie"];
+      if (!header) {
+        throw new Error("Unauthorized");
+      }
+      const jwt = jwtParser.extractJwt(header[0]);
+      if(!jwt){
+        throw new Error("JWT extraction failed")
+      }
+      return jwt;
     } catch (err) {
       errorHandler(err);
     }
