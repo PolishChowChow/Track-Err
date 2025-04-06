@@ -9,6 +9,8 @@ import { AxiosError } from "axios";
 import useGroupedStructuresByType from "@/app/utils/pipelines/useGroupedStructuresByType";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
 import Loading from "../Lifecycle/Loading";
+import SuccessComponent from "../Lifecycle/SuccessComponent";
+import { useState } from "react";
 
 export type FormFieldsType = Omit<ErrorRecordType, "date">;
 
@@ -25,7 +27,7 @@ export default function Form() {
   const { control, handleSubmit } = useForm({
     defaultValues,
   });
-
+  
   const {
     data: fetchedStructures,
     isError,
@@ -39,27 +41,28 @@ export default function Form() {
   const { mutateAsync: createRecord } = useMutation({
     mutationFn: queryFn.createRecord,
     onSuccess: () => {
+      setSuccessMessage("Created record successfully")
       queryClient.invalidateQueries({
         queryKey: ["error-list"],
         exact: true,
       });
     },
   });
-
+  const [successMessage, setSuccessMessage] = useState("")
   const submitHandler = handleSubmit((data) => {
     createRecord(data);
   });
-  if (!fetchedStructures) {
-    return <ErrorComponent message="Invalid data, report this ASAP" />;
+  if (isLoading) {
+    return <Loading />;
   }
+
   if (isError) {
     return <ErrorComponent message={error?.message} />;
   }
-  if (isLoading) {
-    return (
-      <Loading />
-    );
+  if (!fetchedStructures) {
+    return <ErrorComponent message="Invalid data, report this ASAP" />;
   }
+
   const { workstations, references, tables, robots, mountingStations } =
     useGroupedStructuresByType(fetchedStructures);
   return (
@@ -101,6 +104,7 @@ export default function Form() {
         />
       </View>
       <Button title="Submit" onPress={submitHandler} />
+      <SuccessComponent message={successMessage} />
     </View>
   );
 }

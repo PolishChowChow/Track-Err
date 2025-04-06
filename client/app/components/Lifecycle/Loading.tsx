@@ -1,5 +1,5 @@
 import LottieView from 'lottie-react-native';
-import loadingAnim from './loading.json'; // your lottie file
+import loadingAnim from './loading.json';
 import { View } from 'react-native';
 
 export default function Loading() {
