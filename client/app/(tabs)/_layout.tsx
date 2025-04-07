@@ -1,17 +1,15 @@
 import ErrorListWrapper from "../components/ErrorList/ErrorListWrapper";
 import Form from "../components/Form/Form";
-import React from 'react';
-
-import { CommonActions } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-
-
+import React from "react";
+import { CommonActions } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomNavigation, useTheme } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 const Tab = createBottomTabNavigator();
 
 export default function Layout() {
+  const theme = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -19,11 +17,12 @@ export default function Layout() {
       }}
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
+          theme={theme}
           navigationState={state}
-         safeAreaInsets={insets}
+          safeAreaInsets={insets}
           onTabPress={({ route, preventDefault }) => {
             const event = navigation.emit({
-              type: 'tabPress',
+              type: "tabPress",
               target: route.key,
               canPreventDefault: true,
             });
@@ -31,7 +30,7 @@ export default function Layout() {
             if (event.defaultPrevented) {
               preventDefault();
             } else {
-             navigation.dispatch({
+              navigation.dispatch({
                 ...CommonActions.navigate(route.name, route.params),
                 target: state.key,
               });
@@ -51,8 +50,9 @@ export default function Layout() {
               options.tabBarLabel !== undefined
                 ? options.tabBarLabel
                 : options.title !== undefined
-                ? options.title : "";
-                // : route.title;
+                ? options.title
+                : "";
+            // : route.title;
 
             return label;
           }}
@@ -63,7 +63,7 @@ export default function Layout() {
         name="Home"
         component={ErrorListWrapper}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => {
             return <Icon name="view-list" size={size} color={color} />;
           },
@@ -73,7 +73,7 @@ export default function Layout() {
         name="Add"
         component={Form}
         options={{
-          tabBarLabel: 'Add',
+          tabBarLabel: "Add",
           tabBarIcon: ({ color, size }) => {
             return <Icon name="open-in-new" size={size} color={color} />;
           },
