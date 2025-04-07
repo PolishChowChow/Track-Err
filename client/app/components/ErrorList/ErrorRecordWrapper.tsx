@@ -9,6 +9,7 @@ import { UseMutateAsyncFunction } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import useGettingValueFromPanResponder from "@/app/utils/panResponder/useGettingValueFromPanResponder";
 import usePanResponderToSwipeComponent from "@/app/utils/panResponder/usePanResponderToSwipeComponent";
+import { Surface } from "react-native-paper";
 
 type ErrorRecordWrapperProps = {
   onDelete: UseMutateAsyncFunction<AxiosResponse<AxiosResponse<any, any>, any> | undefined, Error, string, void>;
@@ -34,9 +35,8 @@ export default function ErrorRecordWrapper({
     }
   );
   return (
-    <View style={styles.container}>
+    <Surface style={styles.container} elevation={1}>
       <View style={styles.background}></View>
-
       <Animated.View
         style={{
           transform: [{ translateX: panX }],
@@ -45,7 +45,7 @@ export default function ErrorRecordWrapper({
       >
         <ErrorRecord record={record} />
       </Animated.View>
-    </View>
+    </Surface>
   );
 }
 
@@ -61,17 +61,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: 300,
     backgroundColor: "red",
-    justifyContent: "center",
-    alignItems: "flex-end",
+    // justifyContent: "center",
+    // alignItems: "flex-end",
   },
   main: {
     fontSize: 16,
     backgroundColor: "white",
     borderRadius: 4,
-  },
-  box: {
-    width: 200,
-    height: 200,
-    backgroundColor: "blue",
   },
 });
