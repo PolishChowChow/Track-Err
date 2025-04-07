@@ -1,13 +1,18 @@
 import dateParser from "@/app/utils/queries/dateParser";
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { StyleSheet, Text, View } from "react-native";
+import { useTheme } from "react-native-paper";
 export type ErrorRecordProps = {
   record: ErrorRecordTypeWithId;
 };
 export default function ErrorRecord({ record }: ErrorRecordProps) {
   const time = dateParser(record.date)
+  const theme = useTheme();
   return (
-    <View key={record.id} style={styles.row}>
+    <View key={record.id} style={{
+      ...styles.row,
+      backgroundColor: theme.colors.background
+    }}>
       <View style = {styles.dateRow}>
         <Text style={styles.cell}>{time}</Text>
       </View>
@@ -31,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: 300,
     borderRadius: 0,
-    backgroundColor: "white"
+    // backgroundColor: "white"
   },
   cell: {
     padding: 5,

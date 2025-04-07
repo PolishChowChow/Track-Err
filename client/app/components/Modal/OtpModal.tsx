@@ -8,7 +8,6 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  StatusBar,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
@@ -68,7 +67,6 @@ export default function OtpModal({
 
   return (
     <SafeAreaProvider>
-      <StatusBar backgroundColor="#333" />
       <SafeAreaView style={styles.modalContainer}>
         <Modal
           animationType="slide"
