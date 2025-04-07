@@ -52,8 +52,6 @@ export default function Layout() {
                 : options.title !== undefined
                 ? options.title
                 : "";
-            // : route.title;
-
             return label;
           }}
         />

@@ -9,9 +9,11 @@
     },
     "types": ["react", "react-native"],
     "moduleResolution": "bundler",
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": [
     "**/*.ts",
+    "types/react-native-paper.d.ts",
     "**/*.tsx",
     "env.d.ts"
   ]

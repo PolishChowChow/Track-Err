@@ -11,7 +11,7 @@ import ErrorComponent from "../Lifecycle/ErrorComponent";
 import Loading from "../Lifecycle/Loading";
 import SuccessComponent from "../Lifecycle/SuccessComponent";
 import { useState } from "react";
-import { Paragraph, Button, Headline } from "react-native-paper";
+import { Button, Headline, MD3Theme, useTheme } from "react-native-paper";
 
 export type FormFieldsType = Omit<ErrorRecordType, "date">;
 
@@ -24,7 +24,9 @@ const defaultValues: FormFieldsType = {
   content: "Wirestick",
 };
 export default function Form() {
+  const theme = useTheme() as MD3Theme & { toggleTheme: () => void };
   const queryClient = useQueryClient();
+  const toggleTheme = theme.toggleTheme;
   const { control, handleSubmit } = useForm({
     defaultValues,
   });
@@ -115,11 +117,20 @@ export default function Form() {
         mode="contained"
         style={{
           borderRadius: 2,
-          marginTop: 10,
+          // marginTop: 10,
+          margin: 20
         }}
         disabled={isPending}
       >
         Submit
+      </Button>
+      <Button
+        onPress={() => {
+            toggleTheme();
+        }}
+        mode="contained"
+      >
+        Submit2
       </Button>
       <SuccessComponent message={successMessage} />
     </ScrollView>
