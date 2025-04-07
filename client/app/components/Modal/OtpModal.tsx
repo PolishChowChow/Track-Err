@@ -1,6 +1,6 @@
 import queryFn from "@/app/utils/queries/queryFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Modal,
   View,

@@ -1,22 +1,50 @@
 import ErrorListWrapper from "../components/ErrorList/ErrorListWrapper";
 import Form from "../components/Form/Form";
-import React from "react";
-import { CommonActions } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { CommonActions, useRoute } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BottomNavigation, useTheme } from "react-native-paper";
+import { BottomNavigation, Headline, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation } from "expo-router";
+
 const Tab = createBottomTabNavigator();
 
 export default function Layout() {
   const theme = useTheme();
-
+  const navigation = useNavigation();
+  const route = useRoute();
+  useEffect(() => {
+    const routeName = route.name;
+    navigation.setOptions({
+      headerTitle: () => (
+        <Headline
+          style={{
+            fontSize: 20,
+            fontWeight: "bold",
+            color: theme.colors.secondary,
+          }}
+        >
+          {routeName === "Home" ? "Record creation" : "List of all records"}
+        </Headline>
+      ),
+      headerStyle: {
+        backgroundColor: theme.colors.background,
+      },
+      headerTitleStyle: {
+        color: theme.colors.primary,
+      },
+    });
+  }, [navigation, route, theme]);
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        
       }}
+      
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
+          
           theme={theme}
           navigationState={state}
           safeAreaInsets={insets}
@@ -61,6 +89,9 @@ export default function Layout() {
         name="Home"
         component={ErrorListWrapper}
         options={{
+          tabBarStyle : {
+            backgroundColor: theme.colors.secondaryContainer
+          },
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => {
             return <Icon name="view-list" size={size} color={color} />;

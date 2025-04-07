@@ -69,78 +69,80 @@ export default function Form() {
   const { workstations, references, tables, robots, mountingStations } =
     useGroupedStructuresByType(fetchedStructures);
   return (
-    <ScrollView style={styles.container}>
-      <Headline>Add new record</Headline>
-      <SelectInput
-        title="Select workstation:"
-        records={workstations}
-        label="workstation"
-        control={control}
-      />
-      <SelectInput
-        title="Reference"
-        records={references}
-        label="reference"
-        control={control}
-      />
+    <View style={{ backgroundColor: theme.colors.secondaryContainer }}>
+      <ScrollView style={styles.container}>
+        <Headline>Add new record</Headline>
+        <SelectInput
+          title="Select workstation:"
+          records={workstations}
+          label="workstation"
+          control={control}
+        />
+        <SelectInput
+          title="Reference"
+          records={references}
+          label="reference"
+          control={control}
+        />
 
-      <SelectInput
-        title="Table number"
-        records={tables}
-        label="tableId"
-        control={control}
-      />
+        <SelectInput
+          title="Table number"
+          records={tables}
+          label="tableId"
+          control={control}
+        />
 
-      <SelectInput
-        title="Robot number"
-        records={robots}
-        label="robotId"
-        control={control}
-      />
+        <SelectInput
+          title="Robot number"
+          records={robots}
+          label="robotId"
+          control={control}
+        />
 
-      <SelectInput
-        title="Mounting station"
-        records={mountingStations}
-        label="mountingStation"
-        control={control}
-      />
+        <SelectInput
+          title="Mounting station"
+          records={mountingStations}
+          label="mountingStation"
+          control={control}
+        />
 
-      <SelectInput
-        title="Content"
-        records={["Wirestick", "SKP", "Freeze error", "Collision"]}
-        label="content"
-        control={control}
-      />
+        <SelectInput
+          title="Content"
+          records={["Wirestick", "SKP", "Freeze error", "Collision"]}
+          label="content"
+          control={control}
+        />
 
-      <Button
-        onPress={submitHandler}
-        mode="contained"
-        style={{
-          borderRadius: 2,
-          // marginTop: 10,
-          margin: 20
-        }}
-        disabled={isPending}
-      >
-        Submit
-      </Button>
-      <Button
-        onPress={() => {
+        <Button
+          onPress={submitHandler}
+          mode="contained"
+          style={{
+            borderRadius: 2,
+            // marginTop: 10,
+            margin: 20,
+          }}
+          disabled={isPending}
+        >
+          Submit
+        </Button>
+        <Button
+          onPress={() => {
             toggleTheme();
-        }}
-        mode="contained"
-      >
-        Submit2
-      </Button>
-      <SuccessComponent message={successMessage} />
-    </ScrollView>
+          }}
+          mode="contained"
+        >
+          Submit2
+        </Button>
+        <SuccessComponent message={successMessage} />
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     width: "80%",
-    marginTop: 30,
+    margin: 10,
     marginHorizontal: "auto",
     display: "flex",
   },

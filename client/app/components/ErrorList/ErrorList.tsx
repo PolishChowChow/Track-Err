@@ -1,7 +1,7 @@
 import { ErrorRecordTypeWithId } from "@/types/ErrorRecordType";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import ErrorRecordWrapper from "./ErrorRecordWrapper";
 import queryFn from "@/app/utils/queries/queryFn";
 import { useEffect, useState } from "react";
@@ -9,11 +9,12 @@ import OtpModal from "../Modal/OtpModal";
 import Loading from "../Lifecycle/Loading";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
 import jwtHandler from "@/app/utils/JWT/jwtHandler";
+import { useTheme } from "react-native-paper";
 
 export default function ErrorList() {
   const queryClient = useQueryClient();
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const theme = useTheme();
   const {
     data: records,
     isLoading,
@@ -59,7 +60,8 @@ export default function ErrorList() {
     return <ErrorComponent message={error.message} />;
   }
   return (
-    <ScrollView style={styles.container}>
+    <View style={{ backgroundColor: theme.colors.secondaryContainer }}>
+      <ScrollView style={[styles.container]}>
       {errorRecords &&
         errorRecords.map((errorRecord) => {
           return (
@@ -72,6 +74,7 @@ export default function ErrorList() {
           );
         })}
     </ScrollView>
+    </View>
   );
 }
 const styles = StyleSheet.create({

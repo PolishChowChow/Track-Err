@@ -8,22 +8,23 @@ export type ErrorRecordProps = {
 export default function ErrorRecord({ record }: ErrorRecordProps) {
   const time = dateParser(record.date)
   const theme = useTheme();
+  const textColor = { color: theme.colors.onBackground}
   return (
     <View key={record.id} style={{
       ...styles.row,
-      backgroundColor: theme.colors.background
+      backgroundColor: theme.colors.background,
     }}>
       <View style = {styles.dateRow}>
-        <Text style={styles.cell}>{time}</Text>
+        <Text style={[styles.cell, textColor]}>{time}</Text>
       </View>
       <View>
         <View style={styles.titleRow}>
-          <Text style={styles.cell}>
+          <Text style={[styles.cell, textColor]}>
           {record.workstation} - {record.reference} - {record.tableId} - {record.robotId} - {record.mountingStation || "none"}
           </Text>
         </View>
         <View style={styles.contentRow}>
-          <Text>{record.content}</Text>
+          <Text style={textColor}>{record.content}</Text>
         </View>
       </View>
     </View>
