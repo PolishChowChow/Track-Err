@@ -1,7 +1,6 @@
 import ErrorListWrapper from "../components/ErrorList/ErrorListWrapper";
 import Form from "../components/Form/Form";
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
 import { CommonActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -52,8 +51,8 @@ export default function Layout() {
               options.tabBarLabel !== undefined
                 ? options.tabBarLabel
                 : options.title !== undefined
-                ? options.title
-                : route.title;
+                ? options.title : "";
+                // : route.title;
 
             return label;
           }}

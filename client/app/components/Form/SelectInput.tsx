@@ -1,33 +1,50 @@
-import { ErrorRecordFields, ErrorRecordType } from "@/types/ErrorRecordType";
-import { Picker } from "@react-native-picker/picker";
-import { Control, Controller, FieldValues } from "react-hook-form";
+import { ErrorRecordFields } from "@/types/ErrorRecordType";
+import { Control, Controller } from "react-hook-form";
 import { FormFieldsType } from "./Form";
-
+import { Paragraph } from "react-native-paper";
+import { Dropdown } from "react-native-paper-dropdown";
+import { View, StyleSheet } from "react-native"
 type SelectInputType = {
+  title: string;
   records: string[];
   label: ErrorRecordFields;
-  control: Control<FormFieldsType, any, FormFieldsType>
+  control: Control<FormFieldsType, any, FormFieldsType>;
 };
 export default function SelectInput({
   records,
   label,
   control,
+  title
 }: SelectInputType) {
-  const pickers = records.map((record, key) => (
-    <Picker.Item label={record} value={record} key={key} />
-  ));
+  const options = records.map((record, key) => {
+    return { value: record, label: record };
+  });
 
   return (
-    <Controller
+    <View style={styles.container}>
+      <Paragraph>{title}</Paragraph>
+      <Controller
       control={control}
       name={label}
-      render={({ field: { onChange, value }}) => {
-        return (
-          <Picker selectedValue={value} onValueChange={onChange} >
-            {pickers}
-          </Picker>
-        );
-      }}
+      render={({ field: { onChange, value } }) => (
+        <>
+          <Dropdown
+            label={label}
+            mode="outlined"
+            placeholder="Select sth"
+            value={value}
+            onSelect={onChange}
+            options={options}
+          />
+        </>
+      )}
     />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 5
+  }
+})

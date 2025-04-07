@@ -5,7 +5,7 @@ export type ErrorRecordType = {
   reference: string;
   tableId: string;
   robotId: string;
-  mountingStation?: string;
+  mountingStation: string;
   content: string;
 };
 export type ErrorRecordTypeWithId = ErrorRecordType & Id;

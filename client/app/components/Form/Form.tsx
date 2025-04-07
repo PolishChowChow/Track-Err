@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { View, Text, Button } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { ErrorRecordType } from "@/types/ErrorRecordType";
 import SelectInput from "./SelectInput";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import ErrorComponent from "../Lifecycle/ErrorComponent";
 import Loading from "../Lifecycle/Loading";
 import SuccessComponent from "../Lifecycle/SuccessComponent";
 import { useState } from "react";
+import { Paragraph, Button, Headline } from "react-native-paper";
 
 export type FormFieldsType = Omit<ErrorRecordType, "date">;
 
@@ -27,7 +28,7 @@ export default function Form() {
   const { control, handleSubmit } = useForm({
     defaultValues,
   });
-  
+
   const {
     data: fetchedStructures,
     isError,
@@ -38,17 +39,17 @@ export default function Form() {
     queryFn: queryFn.getAllStructures,
   });
 
-  const { mutateAsync: createRecord } = useMutation({
+  const { mutateAsync: createRecord, isPending } = useMutation({
     mutationFn: queryFn.createRecord,
     onSuccess: () => {
-      setSuccessMessage("Created record successfully")
+      setSuccessMessage("Created record successfully");
       queryClient.invalidateQueries({
         queryKey: ["error-list"],
         exact: true,
       });
     },
   });
-  const [successMessage, setSuccessMessage] = useState("")
+  const [successMessage, setSuccessMessage] = useState("");
   const submitHandler = handleSubmit((data) => {
     createRecord(data);
   });
@@ -66,45 +67,70 @@ export default function Form() {
   const { workstations, references, tables, robots, mountingStations } =
     useGroupedStructuresByType(fetchedStructures);
   return (
-    <View>
-      <View>
-        <Text>Select workstation: </Text>
-        <SelectInput
-          records={workstations}
-          label="workstation"
-          control={control}
-        />
-      </View>
-      <View>
-        <Text>Selected reference:</Text>
-        <SelectInput records={references} label="reference" control={control} />
-      </View>
-      <View>
-        <Text>Selected tableid:</Text>
-        <SelectInput records={tables} label="tableId" control={control} />
-      </View>
-      <View>
-        <Text>Selected robotId:</Text>
-        <SelectInput records={robots} label="robotId" control={control} />
-      </View>
-      <View>
-        <Text>Selected mounting station:</Text>
-        <SelectInput
-          records={mountingStations}
-          label="mountingStation"
-          control={control}
-        />
-      </View>
-      <View>
-        <Text>Select error:</Text>
-        <SelectInput
-          records={["Wirestick", "SKP", "Freeze error"]}
-          label="content"
-          control={control}
-        />
-      </View>
-      <Button title="Submit" onPress={submitHandler} />
+    <ScrollView style={styles.container}>
+      <Headline>Add new record</Headline>
+      <SelectInput
+        title="Select workstation:"
+        records={workstations}
+        label="workstation"
+        control={control}
+      />
+      <SelectInput
+        title="Reference"
+        records={references}
+        label="reference"
+        control={control}
+      />
+
+      <SelectInput
+        title="Table number"
+        records={tables}
+        label="tableId"
+        control={control}
+      />
+
+      <SelectInput
+        title="Robot number"
+        records={robots}
+        label="robotId"
+        control={control}
+      />
+
+      <SelectInput
+        title="Mounting station"
+        records={mountingStations}
+        label="mountingStation"
+        control={control}
+      />
+
+      <SelectInput
+        title="Content"
+        records={["Wirestick", "SKP", "Freeze error", "Collision"]}
+        label="content"
+        control={control}
+      />
+
+      <Button
+        onPress={submitHandler}
+        mode="contained"
+        style={{
+          borderRadius: 2,
+          marginTop: 10,
+        }}
+        disabled={isPending}
+      >
+        Submit
+      </Button>
       <SuccessComponent message={successMessage} />
-    </View>
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: "80%",
+    marginTop: 30,
+    marginHorizontal: "auto",
+    display: "flex",
+  },
+});
