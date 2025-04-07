@@ -12,16 +12,16 @@ export const delay = (ms: number) =>
 const queryFn = {
   getAllRecords: async () => {
     try {
-      const jwt = await jwtHandler.getJwt();
-      if (!jwt) {
-        throw new Error("no jwt found");
-      }
+      // const jwt = await jwtHandler.getJwt();
+      // if (!jwt) {
+      //   throw new Error("no jwt found");
+      // }
       const { data } = await apiClient.get<{ data: ErrorRecordTypeWithId[] }>(
         "/records",
         {
           headers: {
             Authorization: '',
-            auth_token: jwt,
+            auth_token: "jwt",
           },
         }
       );

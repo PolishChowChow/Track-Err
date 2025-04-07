@@ -50,6 +50,5 @@ const styles = StyleSheet.create({
   },
   contentRow: {
     padding: 5,
-    wordWrap: "wrap"
   }
 });

@@ -6,7 +6,9 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "types": ["react", "react-native"],
+    "moduleResolution": "bundler",
   },
   "include": [
     "**/*.ts",

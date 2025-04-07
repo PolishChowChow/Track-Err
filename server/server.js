@@ -18,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 app.use(headerChecker);
 app.use("/auth", authRouter);
-app.use(verifyJwt);
+// app.use(verifyJwt);
 app.use("/records", recordRouter);
 app.use("/structures", structureRouter);
 app.use(internalServerErrorHandler);

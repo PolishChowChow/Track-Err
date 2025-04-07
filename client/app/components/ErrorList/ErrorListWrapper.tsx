@@ -31,11 +31,11 @@ export default function ErrorListWrapper() {
   }, []);
   return (
     <>
-      <OtpModal
+      {/* <OtpModal
         isVisible={isModalVisible}
         setIsVisible={setIsModalVisible}
         closeModalCallback={() => {}}
-      />
+      /> */}
       <ErrorList />
     </>
   );
