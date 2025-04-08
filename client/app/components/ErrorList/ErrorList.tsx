@@ -80,6 +80,7 @@ export default function ErrorList() {
 const styles = StyleSheet.create({
   container: {
     maxWidth: 300,
-    marginHorizontal: "auto"
+    marginHorizontal: "auto",
+    height: "100%"
   },
 });

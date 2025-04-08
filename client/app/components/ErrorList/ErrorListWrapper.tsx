@@ -1,6 +1,7 @@
 import queryFn from "@/app/utils/queries/queryFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import OtpModal from "../Modal/OtpModal";
+import { StyleSheet, View } from "react-native";
 import ErrorList from "./ErrorList";
 import { useEffect, useState } from "react";
 import jwtHandler from "@/app/utils/JWT/jwtHandler";

@@ -6,7 +6,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomNavigation, Headline, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "expo-router";
-
+import { StatusBar } from "react-native";
+import * as NavigationBar from 'expo-navigation-bar';
 const Tab = createBottomTabNavigator();
 
 export default function Layout() {
@@ -34,14 +35,16 @@ export default function Layout() {
         color: theme.colors.primary,
       },
     });
+    NavigationBar.setBackgroundColorAsync(theme.colors.background);
+    NavigationBar.setButtonStyleAsync(theme.dark ? "light" : "dark");
   }, [navigation, route, theme]);
   return (
-    <Tab.Navigator
+    <>
+      <StatusBar backgroundColor={theme.colors.background} barStyle={theme.dark ? "light-content" : "dark-content"} />
+      <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        
       }}
-      
       tabBar={({ navigation, state, descriptors, insets }) => (
         <BottomNavigation.Bar
           
@@ -108,6 +111,7 @@ export default function Layout() {
           },
         }}
       />
-    </Tab.Navigator>
+    </Tab.Navigator>  
+    </>
   );
 }

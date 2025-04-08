@@ -9,7 +9,7 @@ import authRouter from "./routes/authRoutes.js";
 const app = express();
 
 import cookieParser from "cookie-parser";
-import { verifyJwt } from "./controllers/authControllers.js";
+// import { verifyJwt } from "./controllers/authControllers.js";
 
 app.use(cookieParser());
 app.use(cors({

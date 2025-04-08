@@ -9,7 +9,8 @@ import { UseMutateAsyncFunction } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import useGettingValueFromPanResponder from "@/app/utils/panResponder/useGettingValueFromPanResponder";
 import usePanResponderToSwipeComponent from "@/app/utils/panResponder/usePanResponderToSwipeComponent";
-import { Surface } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { Surface, useTheme } from "react-native-paper";
 
 type ErrorRecordWrapperProps = {
   onDelete: UseMutateAsyncFunction<AxiosResponse<AxiosResponse<any, any>, any> | undefined, Error, string, void>;
@@ -20,6 +21,7 @@ export default function ErrorRecordWrapper({
   onDelete,
   afterDelete,
 }: ErrorRecordWrapperProps) {
+  const theme = useTheme();
   const panX = useRef(new Animated.Value(0)).current;
   const latestX = useGettingValueFromPanResponder(panX)
   const panHandlers = usePanResponderToSwipeComponent(
@@ -36,7 +38,9 @@ export default function ErrorRecordWrapper({
   );
   return (
     <Surface style={styles.container} elevation={1}>
-      <View style={styles.background}></View>
+      <View style={[{ ...styles.background },{ backgroundColor: theme.colors.onErrorContainer} ]}>
+        <Icon name="view-list"  />
+      </View>
       <Animated.View
         style={{
           transform: [{ translateX: panX }],
@@ -60,13 +64,13 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 300,
-    backgroundColor: "red",
-    // justifyContent: "center",
-    // alignItems: "flex-end",
   },
   main: {
     fontSize: 16,
     backgroundColor: "white",
     borderRadius: 4,
   },
+  errorMessage: {
+    textAlign: "right"
+  }
 });
