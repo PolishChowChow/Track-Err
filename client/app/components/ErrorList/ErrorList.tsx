@@ -4,12 +4,13 @@ import { AxiosError } from "axios";
 import { ScrollView, StyleSheet, View } from "react-native";
 import ErrorRecordWrapper from "./ErrorRecordWrapper";
 import queryFn from "@/app/utils/queries/queryFn";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import OtpModal from "../Modal/OtpModal";
 import Loading from "../Lifecycle/Loading";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
 import jwtHandler from "@/app/utils/JWT/jwtHandler";
 import { useTheme } from "react-native-paper";
+import { useMainContext } from "@/context/MainContextProvider";
 
 export default function ErrorList() {
   const queryClient = useQueryClient();
@@ -24,10 +25,15 @@ export default function ErrorList() {
     queryKey: ["error-list"],
     queryFn: queryFn.getAllRecords,
   });
-
+  const { filter } = useMainContext()
   const [errorRecords, setErrorRecords] = useState<ErrorRecordTypeWithId[]>(
     records || []
   );
+
+  const filteredRecords = useMemo(() : ErrorRecordTypeWithId[] =>{
+    return errorRecords.filter(record => filter === "ALL" || record.reference === filter)
+  }, [errorRecords, filter])
+
   const removeRecordFromUi = (id: string) => {
     setErrorRecords((prevErrorRecords) => {
       return prevErrorRecords.filter((record) => record.id !== id);
@@ -62,8 +68,8 @@ export default function ErrorList() {
   return (
     <View style={{ backgroundColor: theme.colors.secondaryContainer }}>
       <ScrollView style={[styles.container]}>
-      {errorRecords &&
-        errorRecords.map((errorRecord) => {
+      {filteredRecords && filteredRecords.length > 0 &&
+        filteredRecords.map((errorRecord) => {
           return (
             <ErrorRecordWrapper
               record={errorRecord}
