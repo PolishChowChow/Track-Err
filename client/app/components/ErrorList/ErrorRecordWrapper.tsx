@@ -38,15 +38,15 @@ export default function ErrorRecordWrapper({
     }
   );
   return (
-    <Surface style={styles.container} elevation={1}>
-      <View
+    <Surface style={styles.container} elevation={3}>
+      {/* <View
         style={[
           { ...styles.background },
           { backgroundColor: theme.colors.onErrorContainer },
         ]}
       >
         <Icon name="delete" color="white" size={30} />
-      </View>
+      </View> */}
       <Animated.View
         style={{
           transform: [{ translateX: panX }],
@@ -62,7 +62,7 @@ export default function ErrorRecordWrapper({
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-    marginVertical: 8,
+    marginVertical: 8
   },
   background: {
     position: "absolute",

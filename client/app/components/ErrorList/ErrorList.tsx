@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
   container: {
     maxWidth: 300,
     marginHorizontal: "auto",
-    height: "100%"
+    height: "100%",
+    paddingTop: 30
   },
 });

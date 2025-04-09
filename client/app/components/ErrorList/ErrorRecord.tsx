@@ -8,13 +8,13 @@ export type ErrorRecordProps = {
 export default function ErrorRecord({ record }: ErrorRecordProps) {
   const time = dateParser(record.date)
   const theme = useTheme();
-  const textColor = { color: theme.colors.onBackground}
+  const textColor = { color: theme.colors.secondary}
   return (
     <View key={record.id} style={{
       ...styles.row,
       backgroundColor: theme.colors.background,
     }}>
-      <View style = {styles.dateRow}>
+      <View style = {[styles.dateRow]}>
         <Text style={[styles.cell, textColor]}>{time}</Text>
       </View>
       <View>
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: 300,
-    borderRadius: 0,
+    borderRadius: 8,
+    backgroundColor: "rgb(0, 77, 77)"
     // backgroundColor: "white"
   },
   cell: {

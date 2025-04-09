@@ -1,9 +1,9 @@
 import ErrorListWrapper from "../components/ErrorList/ErrorListWrapper";
 import Form from "../components/Form/Form";
 import React, { useEffect } from "react";
-import { CommonActions, useRoute } from "@react-navigation/native";
+import { CommonActions, useNavigationState, useRoute } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BottomNavigation, Headline, useTheme } from "react-native-paper";
+import { Appbar, BottomNavigation, Headline, MD3Theme, useTheme } from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "expo-router";
 import { StatusBar } from "react-native";
@@ -11,22 +11,29 @@ import * as NavigationBar from 'expo-navigation-bar';
 const Tab = createBottomTabNavigator();
 
 export default function Layout() {
-  const theme = useTheme();
+  const theme = useTheme() as MD3Theme & { toggleTheme: () => void };
   const navigation = useNavigation();
   const route = useRoute();
+  const navigationState = useNavigationState((state) => state);
+
+  const currentRoute = navigationState.routes[navigationState.index];
+
+  const getActiveRoute = (route) => {
+    if (route.state && route.state.index != null) {
+      return getActiveRoute(route.state.routes[route.state.index]);
+    }
+    return route;
+  };
+
+  const activeRoute = getActiveRoute(currentRoute);
+
   useEffect(() => {
-    const routeName = route.name;
     navigation.setOptions({
       headerTitle: () => (
-        <Headline
-          style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: theme.colors.secondary,
-          }}
-        >
-          {routeName === "Home" ? "Record creation" : "List of all records"}
-        </Headline>
+        <Appbar.Header>
+      <Appbar.Content title={activeRoute.name === "Home" ? "List" : "Record creation"} />
+      <Appbar.Action icon={theme.dark ? "white-balance-sunny" : "brightness-2"} onPress={theme.toggleTheme} />
+    </Appbar.Header>
       ),
       headerStyle: {
         backgroundColor: theme.colors.background,
@@ -37,7 +44,7 @@ export default function Layout() {
     });
     NavigationBar.setBackgroundColorAsync(theme.colors.background);
     NavigationBar.setButtonStyleAsync(theme.dark ? "light" : "dark");
-  }, [navigation, route, theme]);
+  }, [navigation, route, theme, currentRoute]);
   return (
     <>
       <StatusBar backgroundColor={theme.colors.background} barStyle={theme.dark ? "light-content" : "dark-content"} />

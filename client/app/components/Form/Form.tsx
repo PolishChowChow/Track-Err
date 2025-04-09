@@ -125,14 +125,6 @@ export default function Form() {
         >
           Submit
         </Button>
-        <Button
-          onPress={() => {
-            toggleTheme();
-          }}
-          mode="contained"
-        >
-          Submit2
-        </Button>
         <SuccessComponent message={successMessage} />
       </ScrollView>
     </View>
