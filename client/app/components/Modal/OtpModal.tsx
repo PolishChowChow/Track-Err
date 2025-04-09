@@ -5,14 +5,12 @@ import {
   Modal,
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import ErrorComponent from "../Lifecycle/ErrorComponent";
 import jwtHandler from "@/app/utils/JWT/jwtHandler";
 import { AxiosError } from "axios";
+import { Button, Headline, HelperText, Paragraph, Surface, TextInput, useTheme } from "react-native-paper";
 
 type OtpModalProps = {
   isVisible: boolean;
@@ -26,6 +24,7 @@ export default function OtpModal({
   closeModalCallback,
 }: OtpModalProps) {
   const queryClient = useQueryClient();
+  const { colors } = useTheme();
   const [otpData, setOtpData] = useState({
     value: "",
     error: "",
@@ -78,11 +77,17 @@ export default function OtpModal({
           }}
         >
           <View style={styles.modalBackground}></View>
-          <View style={styles.modal}>
+          <Surface elevation={2} style={[styles.modal, {
+            backgroundColor: colors.background
+          }]}>
+          <View style={{
+            backgroundColor: colors.background
+          }}>
             <View>
-              <Text>Enter your Otp:</Text>
+              <Headline>Authorization</Headline>
+              <Paragraph>Enter your Otp:</Paragraph>
+
               <TextInput
-                style={styles.input}
                 placeholder="098765"
                 keyboardType="numeric"
                 maxLength={6}
@@ -95,11 +100,15 @@ export default function OtpModal({
                     };
                   });
                 }}
+                right={<TextInput.Affix text="/6" />}
               />
             </View>
-            <ErrorComponent message={otpData.error} />
-            <Button title="Submit" onPress={handleSubmit} />
+            <HelperText type="error" visible={otpData.error !== ""}>
+              {otpData.error}
+            </HelperText>
+            <Button onPress={handleSubmit} mode="contained-tonal">Submit</Button>
           </View>
+          </Surface>
         </Modal>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -122,34 +131,16 @@ const styles = StyleSheet.create({
   modal: {
     position: "absolute",
     zIndex: 1,
-    width: 200,
+    minWidth: 200,
     top: "50%",
     left: "50%",
-    transform: [{ translateX: -100 }, { translateY: -50 }],
+    transform: [{ translateX: -100 }, { translateY: -100 }],
     backgroundColor: "white",
-    paddingVertical: 30,
-    paddingHorizontal: 15,
+    paddingVertical: 40,
+    paddingHorizontal: 30,
     display: "flex",
     flexDirection: "column",
-    gap: 15,
-  },
-  input: {
-    marginTop: 10,
-    height: 50,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    backgroundColor: "#f9f9f9",
-    color: "#333",
-    fontSize: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  ruby: {
-    color: "#800",
+    gap: 5,
+    borderRadius: 20
   },
 });

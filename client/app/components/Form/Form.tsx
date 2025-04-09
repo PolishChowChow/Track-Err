@@ -118,7 +118,6 @@ export default function Form() {
           mode="contained"
           style={{
             borderRadius: 2,
-            // marginTop: 10,
             margin: 20,
           }}
           disabled={isPending}

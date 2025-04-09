@@ -14,7 +14,6 @@ import { useMainContext } from "@/context/MainContextProvider";
 
 export default function ErrorList() {
   const queryClient = useQueryClient();
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const theme = useTheme();
   const {
     data: records,
@@ -49,13 +48,8 @@ export default function ErrorList() {
       });
     },
   });
-  
 
-  const deleteJWT = async () =>{
-    await jwtHandler.deleteJwt();
-  }
   useEffect(() => {
-    deleteJWT();
     setErrorRecords(records || []);
     
   }, [records]);

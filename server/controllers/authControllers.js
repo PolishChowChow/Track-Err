@@ -15,26 +15,26 @@ export const getOtp = async (req, res, next) => {
       message: "Error when generating otpCode, try again later!",
     });
   }
-  // client.messages
-  //   .create({
-  //     body: `TrackError Application: your OTP code is ${otpCode}.`,
-  //     from: process.env.T_DEPARTURE,
-  //     to: process.env.T_DESTINATION,
-  //   })
-  //   .then(() => {
-  //     redisClient.set("otp", otpCode, "EX", 1);
-  //     return res.sendStatus(201);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //     return res.sendStatus(400);
-  //   });
+  client.messages
+    .create({
+      body: `TrackError Application: your OTP code is ${otpCode}.`,
+      from: process.env.T_DEPARTURE,
+      to: process.env.T_DESTINATION,
+    })
+    .then(() => {
+      redisClient.set("otp", otpCode, "EX", 1);
+      console.log("message sent");
+      
+      return res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.sendStatus(400);
+    });
   redisClient.set("otp", otpCode, {
     EX: 60,
   });
-  return res.status(201).json({
-    otp: otpCode,
-  });
+  return res.status(201);
 };
 export const checkOtp = async (req, res) => {
   const checker = await redisClient.get("otp");

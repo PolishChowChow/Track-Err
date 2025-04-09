@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Appbar, Menu, TouchableRipple, MD3Theme } from "react-native-paper";
 import CustomItem from "./CustomItem";
 import { useMainContext } from "@/context/MainContextProvider";
-import { referenceType } from "@/types/ReferenceType";
+import { referenceType } from "@/types/referenceType";
 
 type HeaderProps = {
   route: string;
