@@ -1,0 +1,1 @@
+export type referenceType = "ALL" | "MPDB" | "ICE" | "TRYOUT"
