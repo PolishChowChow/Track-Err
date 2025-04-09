@@ -23,8 +23,6 @@ export const getOtp = async (req, res, next) => {
     })
     .then(() => {
       redisClient.set("otp", otpCode, "EX", 1);
-      console.log("message sent");
-      
       return res.sendStatus(201);
     })
     .catch((err) => {

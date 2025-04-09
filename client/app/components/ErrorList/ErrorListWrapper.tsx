@@ -8,6 +8,9 @@ import jwtHandler from "@/app/utils/JWT/jwtHandler";
 export default function ErrorListWrapper() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const queryClient = useQueryClient();
+  const { mutateAsync: getOtp} = useMutation({
+    mutationFn: queryFn.getOtp
+  })
   const { mutateAsync: verifyJwt } = useMutation({
     mutationFn: queryFn.checkJwt,
     onError: () => {
@@ -17,6 +20,7 @@ export default function ErrorListWrapper() {
   const onPageLoadHandler = async () => {
     const jwt = await jwtHandler.getJwt();
     if (!jwt) {
+      getOtp()
       setIsModalVisible(true);
       return;
     }
