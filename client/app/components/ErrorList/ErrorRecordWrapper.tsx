@@ -28,8 +28,8 @@ export default function ErrorRecordWrapper({
   const panHandlers = usePanResponderToSwipeComponent(
     panX,
     latestX,
-    -70,
-    -70,
+    -150,
+    -300,
     async () => {
       const result = await onDelete(record.id);
       if (!result || result.status === 200) {

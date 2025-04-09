@@ -5,10 +5,8 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import ErrorRecordWrapper from "./ErrorRecordWrapper";
 import queryFn from "@/app/utils/queries/queryFn";
 import { useEffect, useMemo, useState } from "react";
-import OtpModal from "../Modal/OtpModal";
 import Loading from "../Lifecycle/Loading";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
-import jwtHandler from "@/app/utils/JWT/jwtHandler";
 import { useTheme } from "react-native-paper";
 import { useMainContext } from "@/context/MainContextProvider";
 
@@ -82,6 +80,7 @@ const styles = StyleSheet.create({
     maxWidth: 300,
     marginHorizontal: "auto",
     height: "100%",
-    paddingTop: 30
+    paddingTop: 30,
+    paddingBottom: 50,
   },
 });
