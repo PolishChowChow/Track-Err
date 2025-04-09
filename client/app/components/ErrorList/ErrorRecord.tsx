@@ -32,13 +32,10 @@ export default function ErrorRecord({ record }: ErrorRecordProps) {
 }
 const styles = StyleSheet.create({
   row: {
-    // marginBottom: 10,
     display: "flex",
     flexDirection: "row",
     width: 300,
     borderRadius: 8,
-    backgroundColor: "rgb(0, 77, 77)"
-    // backgroundColor: "white"
   },
   cell: {
     padding: 5,

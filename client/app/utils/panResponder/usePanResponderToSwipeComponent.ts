@@ -20,7 +20,7 @@ export default function usePanResponderToSwipeComponent(
           onPanResponderRelease: () => {
             const modifiedValue = helperValue.current > borderLineOfSwipe ? 0 : maxSwapValue;
             Animated.spring(panValue, {
-              toValue: modifiedValue,
+              toValue: borderLineOfSwipe,
               useNativeDriver: false,
             }).start(async() => {
               if(modifiedValue === maxSwapValue){

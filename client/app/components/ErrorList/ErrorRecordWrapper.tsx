@@ -28,8 +28,8 @@ export default function ErrorRecordWrapper({
   const panHandlers = usePanResponderToSwipeComponent(
     panX,
     latestX,
-    -150,
-    -300,
+    -70,
+    -70,
     async () => {
       const result = await onDelete(record.id);
       if (!result || result.status === 200) {
@@ -39,14 +39,14 @@ export default function ErrorRecordWrapper({
   );
   return (
     <Surface style={styles.container} elevation={3}>
-      {/* <View
+      <View
         style={[
           { ...styles.background },
           { backgroundColor: theme.colors.onErrorContainer },
         ]}
       >
         <Icon name="delete" color="white" size={30} />
-      </View> */}
+      </View>
       <Animated.View
         style={{
           transform: [{ translateX: panX }],
@@ -62,7 +62,7 @@ export default function ErrorRecordWrapper({
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-    marginVertical: 8
+    marginVertical: 8,
   },
   background: {
     position: "absolute",
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     paddingRight: 20,
     width: 300,
+    borderRadius: 8,
   },
   main: {
     fontSize: 16,
