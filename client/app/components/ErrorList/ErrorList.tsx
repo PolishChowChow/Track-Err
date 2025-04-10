@@ -7,7 +7,7 @@ import queryFn from "@/app/utils/queries/queryFn";
 import { useEffect, useMemo, useState } from "react";
 import Loading from "../Lifecycle/Loading";
 import ErrorComponent from "../Lifecycle/ErrorComponent";
-import { useTheme } from "react-native-paper";
+import { Paragraph, useTheme } from "react-native-paper";
 import { useMainContext } from "@/context/MainContextProvider";
 
 export default function ErrorList() {
@@ -22,14 +22,16 @@ export default function ErrorList() {
     queryKey: ["error-list"],
     queryFn: queryFn.getAllRecords,
   });
-  const { filter } = useMainContext()
+  const { filter } = useMainContext();
   const [errorRecords, setErrorRecords] = useState<ErrorRecordTypeWithId[]>(
     records || []
   );
 
-  const filteredRecords = useMemo(() : ErrorRecordTypeWithId[] =>{
-    return errorRecords.filter(record => filter === "ALL" || record.reference === filter)
-  }, [errorRecords, filter])
+  const filteredRecords = useMemo((): ErrorRecordTypeWithId[] => {
+    return errorRecords.filter(
+      (record) => filter === "ALL" || record.reference === filter
+    );
+  }, [errorRecords, filter]);
 
   const removeRecordFromUi = (id: string) => {
     setErrorRecords((prevErrorRecords) => {
@@ -49,38 +51,41 @@ export default function ErrorList() {
 
   useEffect(() => {
     setErrorRecords(records || []);
-    
   }, [records]);
-  if (isLoading) {
-    return <Loading />;
-  }
-  if (isError) {
-    return <ErrorComponent message={error.message} />;
-  }
   return (
     <View style={{ backgroundColor: theme.colors.secondaryContainer }}>
-      <ScrollView style={[styles.container]}>
-      {filteredRecords && filteredRecords.length > 0 &&
-        filteredRecords.map((errorRecord) => {
-          return (
-            <ErrorRecordWrapper
-              record={errorRecord}
-              key={errorRecord.id}
-              onDelete={onDelete}
-              afterDelete={removeRecordFromUi}
-            />
-          );
-        })}
-    </ScrollView>
+      <ScrollView style={[styles.container]} contentContainerStyle={{
+        flex: 1,
+        display: "flex",
+        justifyContent: "center",
+      }}>
+      {isError && <ErrorComponent message={error.message} />}
+      {isLoading && <Loading />}
+        {filteredRecords &&
+          filteredRecords.length > 0 &&
+          filteredRecords.map((errorRecord) => {
+            return (
+              <ErrorRecordWrapper
+                record={errorRecord}
+                key={errorRecord.id}
+                onDelete={onDelete}
+                afterDelete={removeRecordFromUi}
+              />
+            );
+          })}
+      </ScrollView>
     </View>
   );
 }
 const styles = StyleSheet.create({
+  wrapper: {
+    display: "flex",
+    justifyContent: "center"
+  },
   container: {
     maxWidth: 300,
     marginHorizontal: "auto",
+    minHeight: 200,
     height: "100%",
-    paddingTop: 30,
-    paddingBottom: 50,
   },
 });

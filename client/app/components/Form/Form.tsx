@@ -26,7 +26,6 @@ const defaultValues: FormFieldsType = {
 export default function Form() {
   const theme = useTheme() as MD3Theme & { toggleTheme: () => void };
   const queryClient = useQueryClient();
-  const toggleTheme = theme.toggleTheme;
   const { control, handleSubmit } = useForm({
     defaultValues,
   });
@@ -124,7 +123,7 @@ export default function Form() {
         >
           Submit
         </Button>
-        <SuccessComponent message={successMessage} />
+        {successMessage !== "" && <SuccessComponent message={successMessage} />}
       </ScrollView>
     </View>
   );
