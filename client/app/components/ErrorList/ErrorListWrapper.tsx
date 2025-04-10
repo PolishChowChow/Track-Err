@@ -14,6 +14,7 @@ export default function ErrorListWrapper() {
   const { mutateAsync: verifyJwt } = useMutation({
     mutationFn: queryFn.checkJwt,
     onError: () => {
+      getOtp();
       setIsModalVisible(true);
     },
   });
@@ -26,6 +27,7 @@ export default function ErrorListWrapper() {
     }
     const response = await verifyJwt(jwt);
     if(response.status === 200){
+      console.log("working??");
         await queryClient.invalidateQueries({
             queryKey: ['error-records']
         })

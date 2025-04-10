@@ -94,7 +94,6 @@ const queryFn = {
           "set-cookie": jwt,
         },
       });
-
       return response;
     } catch (err) {
       errorHandler(err);
