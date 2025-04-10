@@ -55,7 +55,7 @@ export default function ErrorList() {
   return (
     <View style={{ backgroundColor: theme.colors.secondaryContainer }}>
       <ScrollView style={[styles.container]} contentContainerStyle={{
-        flex: 1,
+        minHeight: "100%",
         display: "flex",
         justifyContent: "center",
       }}>
@@ -78,10 +78,6 @@ export default function ErrorList() {
   );
 }
 const styles = StyleSheet.create({
-  wrapper: {
-    display: "flex",
-    justifyContent: "center"
-  },
   container: {
     maxWidth: 300,
     marginHorizontal: "auto",
